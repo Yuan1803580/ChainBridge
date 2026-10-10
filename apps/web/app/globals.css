@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --canvas: #f4f6f3;
+  --panel: #ffffff;
+  --ink: #18201d;
+  --muted: #66706b;
+  --line: #dbe1dc;
+  --brand: #0f6c45;
+  --brand-soft: #edf8f2;
+  --danger: #b43a3a;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--canvas); }
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+button, input, select, textarea { font: inherit; letter-spacing: 0; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #63a983;
+  outline-offset: 2px;
+}
+::selection { background: #cbe7d7; }
+
+@layer components {
+  .surface { @apply border border-line bg-white shadow-panel; border-radius: 8px; }
+  .section-head { @apply mb-4 flex flex-wrap items-center justify-between gap-3; }
+  .page-title { @apply text-2xl font-semibold leading-tight text-ink sm:text-[28px]; }
+  .page-subtitle { @apply mt-1 max-w-3xl text-sm leading-6 text-neutral-500; }
+  .section-title { @apply text-base font-semibold text-ink; }
+  .label { @apply mb-1.5 block text-xs font-medium text-neutral-600; }
+  .input { @apply h-10 w-full border border-line bg-white px-3 text-sm text-ink placeholder:text-neutral-400; border-radius: 6px; }
+  .textarea { @apply min-h-28 w-full resize-y border border-line bg-white px-3 py-2.5 text-sm leading-6 text-ink placeholder:text-neutral-400; border-radius: 6px; }
+  .select { @apply h-10 border border-line bg-white px-3 pr-8 text-sm text-ink; border-radius: 6px; }
+  .btn { @apply inline-flex h-10 shrink-0 items-center justify-center gap-2 border px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50; border-radius: 6px; }
+  .btn-primary { @apply btn border-brand-600 bg-brand-600 text-white hover:border-brand-700 hover:bg-brand-700; }
+  .btn-secondary { @apply btn border-line bg-white text-neutral-700 hover:bg-neutral-50; }
+  .btn-danger { @apply btn border-red-200 bg-white text-red-700 hover:bg-red-50; }
+  .icon-btn { @apply inline-flex size-10 shrink-0 items-center justify-center border border-line bg-white text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-ink; border-radius: 6px; }
+  .mono { @apply font-mono text-[12px]; }
+}
+
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: #cbd2cc transparent; }
+.code-scroll { scrollbar-width: thin; scrollbar-color: #53635b #17201c; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .fade-in { animation: fade-in 180ms ease-out both; }
+  @keyframes fade-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+}

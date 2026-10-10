@@ -1,0 +1,17 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "apps/api/tests"
+  ],
+  "eslint.workingDirectories": [
+    "apps/web"
+  ],
+  "typescript.tsdk": "apps/web/node_modules/typescript/lib",
+  "files.exclude": {
+    "**/.pytest_cache": true,
+    "**/__pycache__": true,
+    "**/.next*": true,
+    "**/hardhat-cache": true
+  }
+}

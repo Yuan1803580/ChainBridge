@@ -1,0 +1,72 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*keystore*.json
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node
+node_modules/
+.next/
+.next-*/
+dist/
+coverage/
+playwright-report/
+test-results/
+.pnpm-store/
+
+# Hardhat build artifacts
+hardhat-artifacts/
+hardhat-cache/
+cache/
+artifacts/
+
+# Local runtime data
+data/
+uploads/
+.runtime/
+*.db
+*.sqlite
+*.sqlite3
+
+# Editors and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# Local tool / session artifacts
+.codebuddy/
+.workbuddy/memory/
+.workbuddy/cleanup_backup_*/
+
+# Analysis artifacts
+tmp/
+
+# Build caches
+*.tsbuildinfo
+*.egg-info/
+
+# Paper / thesis deliverables (kept locally, excluded from the public repo)
+/deliverables/
+/figures/
+
+# Thesis chapters / experiment drafts excluded from the public repo
+/docs/relay_algorithm_chapter.md
+/docs/threat_model_chapter.md
+/docs/threat_model_chapter.docx
+/docs/experiment-design.md
+/docs/实验基准测试方案.md

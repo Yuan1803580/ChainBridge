@@ -1,0 +1,16 @@
+{
+  "name": "@agent-shop/chain-worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.ts",
+    "start:protocol": "node src/protocol-index.ts",
+    "dead-letters": "node src/dead-letter.ts",
+    "test": "node --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "viem": "^2.55.8"
+  }
+}

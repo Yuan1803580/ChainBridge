@@ -1,0 +1,57 @@
+# External Agent Sidecar bundle (Plan B)
+#
+# Purpose: let an external operator run the Agent Signer Sidecar on their own
+# machine with one command. The signer stays on loopback (127.0.0.1) by default;
+# only the agent-runner (run separately, see docs) is exposed to the platform.
+#
+# Quick start:
+#   1. cp sidecar.env.example sidecar.env
+#   2. mkdir -p signer-config && cp services/agent-signer/config.example.json signer-config/signer-config.json
+#   3. docker compose -f docker-compose.sidecar.yml --env-file sidecar.env up -d
+#
+# Image: by default pulls from a registry. To build locally instead, comment the
+# `image:` line and uncomment the `build:` block below.
+name: agent-sidecar
+
+services:
+  signer:
+    image: ${SIDECAR_IMAGE:-ghcr.io/yuan1803580/agent-signer:latest}
+    # build:
+    #   context: .
+    #   dockerfile: services/agent-signer/Dockerfile
+    environment:
+      APP_ENV: production
+      AGENT_SIGNER_CONFIG_FILE: /app/config/signer-config.json
+      SIDECAR_KEY_DIR: /app/data/keys
+      # Run DB migrations on first launch. Secrets are auto-generated if omitted.
+      SIDECAR_RUN_MIGRATIONS: "true"
+      SIDECAR_PROVISIONING_TOKEN: ${SIDECAR_PROVISIONING_TOKEN:-}
+      SIDECAR_STORAGE_KEY: ${SIDECAR_STORAGE_KEY:-}
+      WORKER_INTENT_HMAC_SECRET: ${WORKER_INTENT_HMAC_SECRET:-}
+    volumes:
+      # RW: /v1/provision rewrites this file to append the provisioned agent.
+      - ./signer-config:/app/config:rw
+      - sidecar_keys:/app/data/keys
+      - sidecar_data:/app/data
+    restart: unless-stopped
+    # IMPORTANT: do NOT publish 8020. The signer is reached only via loopback by
+    # the co-located agent-runner (see docs: network_mode "service:signer").
+
+  # OPTIONAL advanced profile (Plan A / remote-signing). Exposes the signer over
+  # mTLS with /v1/provision blocked. Enable with:
+  #   docker compose -f docker-compose.sidecar.yml --profile expose up -d
+  caddy:
+    image: caddy:2-alpine
+    profiles: ["expose"]
+    depends_on:
+      - signer
+    ports:
+      - "8020:8020"
+    volumes:
+      - ./services/agent-signer/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./certs:/certs:ro
+    restart: unless-stopped
+
+volumes:
+  sidecar_keys:
+  sidecar_data:

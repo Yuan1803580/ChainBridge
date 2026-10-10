@@ -1,0 +1,27 @@
+{
+  "agents": [
+    {
+      "runtimeId": "runtime-openclaw-01",
+      "agentSlug": "openclaw-research-01",
+      "did": "did:agent:openclaw-research-01:testnet",
+      "homeWallet": "0x0000000000000000000000000000000000000000",
+      "identityKeyFile": "C:/secure/openclaw/identity.pem",
+      "walletKeyFile": "C:/secure/openclaw/wallet.key",
+      "credentialSha256": "replace-with-sha256-of-the-agent-specific-runner-credential",
+      "homeChainId": 421614,
+      "routeKey": "SEPOLIA_TO_ARBITRUM_SEPOLIA_CCIP_BNM_V1",
+      "routeVersion": 1,
+      "allowedContracts": [],
+      "scopes": [
+        "identity:sign",
+        "result:sign",
+        "wallet:sign",
+        "status:write"
+      ],
+      "maxGasLimit": 500000,
+      "maxFeePerGas": "100000000000",
+      "maxPriorityFeePerGas": "5000000000",
+      "maxTotalFeeWei": "50000000000000000"
+    }
+  ]
+}

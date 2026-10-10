@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 4,
+  "workflowApiId": "replace-with-workflow-uuid",
+  "nodeApiId": "replace-with-node-uuid",
+  "attemptApiId": "replace-with-attempt-uuid",
+  "agentEvidencePath": ".runtime/managed-testnet/acceptance/agent-transaction-replace-with-attempt-uuid.json",
+  "deploymentManifestPath": ".runtime/managed-testnet/route-replace-with-deployment-uuid.json",
+  "ccipMessageId": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "sourceSettlementTxHash": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "destinationSettlementTxHash": "0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "sourceConfirmationTxHash": "0xdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+}

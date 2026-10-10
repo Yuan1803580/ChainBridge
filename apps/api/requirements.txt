@@ -1,0 +1,15 @@
+fastapi>=0.115,<1
+uvicorn[standard]>=0.34,<1
+pydantic>=2.10,<3
+sqlalchemy>=2.0,<3
+PyJWT>=2.10,<3
+cryptography>=44,<47
+jsonschema>=4.23,<5
+psycopg[binary]>=3.2,<4
+pytest>=8.3,<10
+httpx>=0.28,<1
+alembic>=1.14,<2
+eth-account>=0.13,<1
+# 接入描述文件支持 YAML frontmatter。此前只靠 uvicorn[standard] 传递引入 PyYAML，
+# 文档化的输入格式不应依赖传递依赖，这里显式声明。
+PyYAML>=6,<7

@@ -1,0 +1,27 @@
+# Optional reverse proxy for exposing the signer over mTLS (Plan A / advanced).
+# See docker-compose.sidecar.yml `caddy` service (profile: expose).
+# Operator must supply:
+#   - /certs/ca.pem        : CA that issues client certs (mTLS verification)
+#   - a server certificate  : provide via Caddy's `tls` directive or your own cert
+{
+    email admin@local
+    servers {
+        trusted_ca_certs /certs/ca.pem
+        client_auth {
+            mode require_and_verify
+        }
+    }
+}
+
+:8020 {
+    # Never expose the loopback-only provision endpoint remotely.
+    @block path /v1/provision
+    respond @block 404
+
+    # Only proxy explicit signing + health paths.
+    @sign path /v1/sign/* /v1/transactions/* /v1/transactions /health
+    reverse_proxy @sign signer:8020
+
+    # Reject everything else.
+    respond 404
+}

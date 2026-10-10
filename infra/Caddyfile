@@ -1,0 +1,49 @@
+# Caddy reverse proxy + automatic TLS for the cross-chain agent marketplace.
+#
+# Caddy obtains and renews Let's Encrypt certificates automatically, so this is the
+# simplest way to serve the platform over HTTPS (replacing the plaintext nginx on :80).
+#
+# Prerequisites:
+#   - A DNS A/AAAA record for your domain pointing at this host's public IP
+#     (Let's Encrypt cannot issue certs for a bare IP).
+#   - Ports 80 and 443 reachable from the internet.
+#   - The web container published on :3000 and the api container on :8000 (see
+#     docker-compose.yml). The signer (8020) and runner (8010) stay loopback-only
+#     and are NOT proxied publicly.
+#
+# Usage:
+#   caddy run --config infra/Caddyfile
+# or, in a container:
+#   docker run -d -p 80:80 -p 443:443 -v $PWD/infra/Caddyfile:/etc/caddy/Caddyfile caddy
+
+{
+    # Replace with the operator's contact email (used for Let's Encrypt account).
+    email admin@example.com
+    # Uncomment to test cert issuance without hitting rate limits:
+    # acme_ca https://acme-staging-v02.api.letsencrypt.org/directory
+}
+
+agent.example.com {
+    # API: proxy everything under /api (and /docs) to the API container.
+    handle_path /api/* {
+        reverse_proxy localhost:8000
+    }
+    # Web app (Next.js) for everything else.
+    handle {
+        reverse_proxy localhost:3000
+    }
+}
+
+# ---------------------------------------------------------------------------
+# Alternative for a bare IP / quick experiment: Cloudflare Tunnel.
+# No domain or cert management required; cloudflared terminates TLS and gives you
+# an https://<name>.trycloudflare.com (or a custom zone) URL that reaches this host.
+#
+#   cloudflared tunnel --url http://localhost:80
+#
+# Then set the platform's public origin to that https URL:
+#   - web env  NEXT_PUBLIC_API_URL=https://<name>.trycloudflare.com
+#   - api env  CORS_ORIGINS=https://<name>.trycloudflare.com
+# and re-create the web container. External runners register their endpoint as the
+# https URL too. See docs/HTTPS_DEPLOYMENT.md.
+# ---------------------------------------------------------------------------

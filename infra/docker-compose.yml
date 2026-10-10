@@ -1,0 +1,163 @@
+name: agent-crosschain-shop
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: apps/api/Dockerfile
+    environment:
+      APP_ENV: ${APP_ENV:-development}
+      APP_SECRET: ${APP_SECRET:-agent-market-compose-development-only}
+      DATABASE_URL: postgresql+psycopg://agent_market:agent_market_dev@postgres:5432/agent_market
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
+      SETTLEMENT_MODE: ${SETTLEMENT_MODE:-mock}
+      ZERO_EX_API_URL: ${ZERO_EX_API_URL:-https://api.0x.org}
+      ZERO_EX_API_KEY: ${ZERO_EX_API_KEY:-}
+      ZERO_EX_ALLOWED_TARGETS: ${ZERO_EX_ALLOWED_TARGETS:-}
+      ZERO_EX_ALLOWED_ALLOWANCE_TARGETS: ${ZERO_EX_ALLOWED_ALLOWANCE_TARGETS:-}
+      ZERO_EX_ALLOWED_SELECTORS: ${ZERO_EX_ALLOWED_SELECTORS:-}
+      ZERO_EX_QUOTE_TTL_SECONDS: ${ZERO_EX_QUOTE_TTL_SECONDS:-90}
+      SOURCE_CHAIN_ID: ${SOURCE_CHAIN_ID:-11155111}
+      DESTINATION_CHAIN_ID: ${DESTINATION_CHAIN_ID:-421614}
+      SOURCE_CHAIN_SELECTOR: ${SOURCE_CHAIN_SELECTOR:-}
+      DESTINATION_CHAIN_SELECTOR: ${DESTINATION_CHAIN_SELECTOR:-}
+      SOURCE_SETTLEMENT_TOKEN: ${SOURCE_SETTLEMENT_TOKEN:-}
+      DESTINATION_SETTLEMENT_TOKEN: ${DESTINATION_SETTLEMENT_TOKEN:-}
+      DESTINATION_STC_TOKEN: ${DESTINATION_STC_TOKEN:-}
+      SOURCE_RPC_URL: ${SOURCE_RPC_URL:-}
+      DESTINATION_RPC_URL: ${DESTINATION_RPC_URL:-}
+      LISTENER_HMAC_KEYS: ${LISTENER_HMAC_KEYS:-}
+      LISTENER_SIGNATURE_WINDOW_SECONDS: ${LISTENER_SIGNATURE_WINDOW_SECONDS:-300}
+      RELAYER_LEASE_SECONDS: ${RELAYER_LEASE_SECONDS:-300}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  agent-runner:
+    build:
+      context: ../services/agent-runner
+      dockerfile: Dockerfile
+    environment:
+      APP_ENV: development
+
+  web:
+    build:
+      context: ..
+      dockerfile: apps/web/Dockerfile
+      args:
+        # Next.js inlines NEXT_PUBLIC_* at build time, so this MUST be the origin
+        # the browser will use (not an in-cluster hostname). Override it in .env
+        # for remote deployments, e.g. NEXT_PUBLIC_API_URL=http://<YOUR_SERVER_IP>
+        # which lets nginx proxy /api/ to the API container.
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+        NEXT_PUBLIC_ENABLE_MOCK_FALLBACK: "false"
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+      NEXT_PUBLIC_ENABLE_MOCK_FALLBACK: "false"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+      - agent-runner
+
+  chain-worker:
+    profiles: ["crosschain"]
+    build:
+      context: ..
+      dockerfile: services/chain-worker/Dockerfile
+    environment:
+      API_URL: http://api:8000
+      APP_ENV: ${APP_ENV:-development}
+      CHAIN_WORKER_ID: ${CHAIN_WORKER_ID:-ccip-worker-1}
+      CHAIN_WORKER_HMAC_SECRET: ${CHAIN_WORKER_HMAC_SECRET:-}
+      CHAIN_WORKER_DB: /app/data/chain-worker.db
+      SOURCE_RPC_URL: ${SOURCE_RPC_URL:-}
+      DESTINATION_RPC_URL: ${DESTINATION_RPC_URL:-}
+      SOURCE_CHAIN_ID: ${SOURCE_CHAIN_ID:-11155111}
+      DESTINATION_CHAIN_ID: ${DESTINATION_CHAIN_ID:-421614}
+      SOURCE_CHAIN_SELECTOR: ${SOURCE_CHAIN_SELECTOR:-}
+      DESTINATION_CHAIN_SELECTOR: ${DESTINATION_CHAIN_SELECTOR:-}
+      REAL_MARKETPLACE_ESCROW_ADDRESS: ${REAL_MARKETPLACE_ESCROW_ADDRESS:-}
+      REAL_CCIP_RECEIVER_ADDRESS: ${REAL_CCIP_RECEIVER_ADDRESS:-}
+      SOURCE_SETTLEMENT_TOKEN: ${SOURCE_SETTLEMENT_TOKEN:-}
+      DESTINATION_SETTLEMENT_TOKEN: ${DESTINATION_SETTLEMENT_TOKEN:-}
+      RELAYER_PRIVATE_KEY: ${RELAYER_PRIVATE_KEY:-}
+      RELAYER_SIGNER_MODE: ${RELAYER_SIGNER_MODE:-env}
+      SOURCE_CONFIRMATIONS: ${SOURCE_CONFIRMATIONS:-3}
+      DESTINATION_CONFIRMATIONS: ${DESTINATION_CONFIRMATIONS:-5}
+      CHAIN_REORG_DEPTH: ${CHAIN_REORG_DEPTH:-12}
+      CHAIN_BLOCK_CHUNK_SIZE: ${CHAIN_BLOCK_CHUNK_SIZE:-1000}
+      CHAIN_POLL_INTERVAL_MS: ${CHAIN_POLL_INTERVAL_MS:-5000}
+      SOURCE_START_BLOCK: ${SOURCE_START_BLOCK:-0}
+      DESTINATION_START_BLOCK: ${DESTINATION_START_BLOCK:-0}
+      RELAYER_MAX_ATTEMPTS: ${RELAYER_MAX_ATTEMPTS:-8}
+      RELAYER_LEASE_SECONDS: ${RELAYER_LEASE_SECONDS:-300}
+      RELAYER_HEARTBEAT_MS: ${RELAYER_HEARTBEAT_MS:-30000}
+      RELAYER_RECEIPT_TIMEOUT_MS: ${RELAYER_RECEIPT_TIMEOUT_MS:-120000}
+      RELAYER_DROPPED_AFTER_MS: ${RELAYER_DROPPED_AFTER_MS:-600000}
+      CHAIN_EVENT_MAX_ATTEMPTS: ${CHAIN_EVENT_MAX_ATTEMPTS:-8}
+      CHAIN_EVENT_RETRY_BASE_MS: ${CHAIN_EVENT_RETRY_BASE_MS:-1000}
+      CHAIN_WORKER_HEALTH_PORT: ${CHAIN_WORKER_HEALTH_PORT:-9090}
+      CHAIN_ALERT_WEBHOOK_URL: ${CHAIN_ALERT_WEBHOOK_URL:-}
+      CCIP_STALLED_AFTER_SECONDS: ${CCIP_STALLED_AFTER_SECONDS:-3600}
+    ports:
+      - "9090:9090"
+    volumes:
+      - chain_worker_data:/app/data
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:9090/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: agent_market
+      POSTGRES_USER: agent_market
+      POSTGRES_PASSWORD: agent_market_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agent_market -d agent_market"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: agentmarket
+      MINIO_ROOT_PASSWORD: agentmarket-dev-only
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+  chain_worker_data:

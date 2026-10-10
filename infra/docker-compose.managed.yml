@@ -1,0 +1,102 @@
+name: agent-crosschain-shop
+
+# Override to enable the managed-testnet Sidecar (agent-signer) and flip the
+# API/Web into managed-testnet self-service mode. The persistent chain-worker
+# (relayer) is intentionally left untouched; the route contract stack is deployed
+# by a one-shot protocol-worker container (see deploy step), not by this compose.
+
+services:
+  api:
+    environment:
+      PLATFORM_PROFILE: managed-testnet
+      MANAGED_SELF_SERVICE_ONBOARDING: "true"
+      MANAGED_SELF_SERVICE_CAPABILITIES: research
+      MANAGED_SIDECAR_PUBLIC_URL: http://127.0.0.1:8020
+      # Allow the API to drive the managed Runner's control plane (loopback only).
+      RUNNER_CONTROL_HMAC_SECRET: ${RUNNER_CONTROL_HMAC_SECRET:-}
+      # API->Runner technical-check credential for provider onboarding `complete`.
+      # Must equal the Runner's AGENT_RUNNER_API_TOKEN.
+      RUNNER_CHECK_API_TOKEN: ${RUNNER_CHECK_API_TOKEN:-}
+      # Production profile requires the platform admin identity (sourced from .env).
+      PLATFORM_ADMIN_DID: ${PLATFORM_ADMIN_DID:-}
+      PLATFORM_ADMIN_PUBLIC_KEY: ${PLATFORM_ADMIN_PUBLIC_KEY:-}
+      # The route-contract manifest is produced on the host by the one-shot
+      # protocol-worker; without it /api/v1/workflow-funding-config cannot report
+      # the on-chain funding target.
+      LOCAL_PROTOCOL_MANIFEST: ${LOCAL_PROTOCOL_MANIFEST:-/app/.runtime/managed-testnet/protocol-base.json}
+      # Operator console login. Leave empty to keep POST /api/v1/auth/console-login
+      # disabled (the route 404s unless a >=32 char secret is configured).
+      CONSOLE_LOGIN_SECRET: ${CONSOLE_LOGIN_SECRET:-}
+      CONSOLE_LOGIN_DIDS: ${CONSOLE_LOGIN_DIDS:-}
+    volumes:
+      - /opt/agent-crosschain/.runtime:/app/.runtime:ro
+
+  web:
+    environment:
+      PLATFORM_PROFILE: managed-testnet
+      MANAGED_SELF_SERVICE_ONBOARDING: "true"
+      MANAGED_SELF_SERVICE_CAPABILITIES: research
+      MANAGED_SIDECAR_PUBLIC_URL: http://127.0.0.1:8020
+
+  signer:
+    build:
+      context: ..
+      dockerfile: services/agent-signer/Dockerfile
+    # Share the API's network namespace so the managed Runner (also in the api
+    # netns) can reach the Sidecar on loopback 127.0.0.1:8020. SidecarClient
+    # enforces a loopback signerUrl, so the signer MUST live in the same netns
+    # as the runner; `host` mode put it on a different loopback and broke
+    # runtime result-signing (test-invoke returned 500 FileNotFoundError).
+    network_mode: "service:api"
+    environment:
+      APP_ENV: production
+      AGENT_SIGNER_CONFIG_FILE: /app/config/signer-config.json
+      SIDECAR_STORAGE_KEY: ${SIDECAR_STORAGE_KEY}
+      SIDECAR_PROVISIONING_TOKEN: ${SIDECAR_PROVISIONING_TOKEN}
+      SIDECAR_KEY_DIR: /app/data/keys
+      PLATFORM_PROFILE: managed-testnet
+      MANAGED_SELF_SERVICE_ONBOARDING: "true"
+      MANAGED_SELF_SERVICE_CAPABILITIES: research
+      MANAGED_SIDECAR_PUBLIC_URL: http://127.0.0.1:8020
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 127.0.0.1 --port 8020"
+    volumes:
+      - /opt/agent-crosschain/signer-config:/app/config:rw
+      - signer_keys:/app/data/keys
+      - signer_data:/app/data
+    restart: unless-stopped
+    depends_on:
+      - api
+
+  # The managed Runner must be reachable by the API via loopback (the API code
+  # enforces RUNNER_CONTROL_URL == 127.0.0.1/localhost). Sharing the API's
+  # network namespace gives the API container 127.0.0.1:8010 -> runner without
+  # disturbing API -> postgres/redis (still on the bridge network).
+  agent-runner:
+    network_mode: "service:api"
+    depends_on:
+      - api
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8010"
+    environment:
+      APP_ENV: production
+      RUNNER_PROFILE: managed
+      AGENT_RUNNER_API_TOKEN: ${AGENT_RUNNER_API_TOKEN:-}
+      RUNNER_CONTROL_HMAC_SECRET: ${RUNNER_CONTROL_HMAC_SECRET:-}
+      # Enables the managed Runner's `llm` executor to call DeepSeek for the
+      # provider onboarding `complete` technical check (test-invoke). Value is
+      # sourced from the project .env (kept out of source control).
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+    # The runner image only COPYs `app/`; the alembic config + migrations live in
+    # the repo and are mounted in so `alembic upgrade head` can create the
+    # managed_runtimes tables without rebuilding the image.
+    volumes:
+      - /opt/agent-crosschain/services/agent-runner/alembic.ini:/app/alembic.ini:ro
+      - /opt/agent-crosschain/services/agent-runner/alembic:/app/alembic:ro
+      - agent_runner_data:/app/data
+      # Read-only access to the Sidecar's runtime credentials so the runner can
+      # authenticate to the signer (same named volume the signer writes to).
+      - signer_keys:/app/data/keys:ro
+
+volumes:
+  signer_keys:
+  signer_data:
+  agent_runner_data:

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-market.local/schemas/order-envelope.json",
+  "title": "Signed order terms envelope",
+  "type": "object",
+  "required": [
+    "orderId",
+    "sourceType",
+    "requesterDid",
+    "providerDid",
+    "title",
+    "terms",
+    "price",
+    "createdAt"
+  ],
+  "properties": {
+    "orderId": { "type": "string", "format": "uuid" },
+    "sourceType": { "enum": ["demandBid", "directCapability"] },
+    "requesterDid": { "type": "string", "pattern": "^did:" },
+    "providerDid": { "type": "string", "pattern": "^did:" },
+    "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "terms": { "type": "object" },
+    "input": {},
+    "acceptanceCriteria": { "type": "array", "items": { "type": "string" } },
+    "price": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": { "type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$" },
+        "currency": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "deadline": { "type": ["string", "null"], "format": "date-time" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "termsHash": { "type": "string", "pattern": "^0x[0-9a-fA-F]{64}$" },
+    "signatures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["did", "verificationMethod", "signature"],
+        "properties": {
+          "did": { "type": "string", "pattern": "^did:" },
+          "verificationMethod": { "type": "string" },
+          "signature": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
+

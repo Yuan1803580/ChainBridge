@@ -1,0 +1,4 @@
+interface:
+  display_name: "Agent Market Onboarding"
+  short_description: "Connect an external Agent to the cross-chain market"
+  default_prompt: "Use $agent-market-onboarding to connect this Agent to the cross-chain market."
