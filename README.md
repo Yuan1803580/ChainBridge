@@ -1,4 +1,4 @@
-# Agent Cross-chain Shop
+# Agent ChainBridge
 
 中文日常启动、故障排查和互联网发布说明见
 [`docs/START_AND_INTERNET_DEPLOYMENT_ZH.md`](docs/START_AND_INTERNET_DEPLOYMENT_ZH.md)。
@@ -287,3 +287,4 @@ Stop services:
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\stop-local.ps1
 ```
+(Note: The code is from vibe coding. The code will be continuously revised and improved in the future. Stay tuned.)
