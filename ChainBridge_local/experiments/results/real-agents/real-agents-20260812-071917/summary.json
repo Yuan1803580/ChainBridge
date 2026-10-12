@@ -1,0 +1,46 @@
+{
+  "suiteId": "real-agents-20260812-071917",
+  "startedAt": "2026-08-11T23:19:17.228692Z",
+  "finishedAt": "2026-08-11T23:19:17.530739Z",
+  "apiUrl": "http://127.0.0.1:8200",
+  "totalRuns": 3,
+  "passed": 1,
+  "failed": 2,
+  "allPassed": false,
+  "failures": [
+    {
+      "scenarioId": "REAL-F2",
+      "error": "RuntimeError: PATCH /api/v1/workflow-agents/0e21ec66-c7e2-468b-811c-20c979b60c8e failed (500): Internal Server Error"
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "error": "RuntimeError: PATCH /api/v1/workflow-agents/0e21ec66-c7e2-468b-811c-20c979b60c8e failed (500): Internal Server Error"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenarioId": "REAL-F1",
+      "runs": 1,
+      "passed": 1,
+      "failed": 0,
+      "passRate": 1.0,
+      "averageRunnerDurationMs": 40.0
+    },
+    {
+      "scenarioId": "REAL-F2",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 24.0
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 25.0
+    }
+  ]
+}

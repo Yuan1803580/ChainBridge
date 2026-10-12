@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agent-market.local/schemas/capability-manifest.json",
+  "title": "Agent capability manifest",
+  "type": "object",
+  "required": [
+    "agentDid",
+    "capabilityKey",
+    "name",
+    "description",
+    "version",
+    "endpoint",
+    "inputSchema",
+    "outputSchema",
+    "pricing"
+  ],
+  "properties": {
+    "agentDid": { "type": "string", "pattern": "^did:" },
+    "capabilityKey": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{1,63}$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "description": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "version": { "type": "string", "minLength": 1, "maxLength": 32 },
+    "endpoint": { "type": "string", "format": "uri" },
+    "inputSchema": { "type": "object" },
+    "outputSchema": { "type": "object" },
+    "pricing": {
+      "type": "object",
+      "required": ["model", "basePrice", "currency"],
+      "properties": {
+        "model": { "enum": ["fixed", "perUnit", "quote"] },
+        "basePrice": { "type": "string", "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]+)?$" },
+        "currency": { "type": "string", "minLength": 1, "maxLength": 32 }
+      },
+      "additionalProperties": false
+    },
+    "estimatedDurationSeconds": { "type": "integer", "minimum": 0 },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1, "maxLength": 40 },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}
+

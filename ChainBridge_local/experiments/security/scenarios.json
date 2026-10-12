@@ -1,0 +1,16 @@
+[
+  {"id":"S01","name":"forged_agent_signature","mechanism":"platform signature verification","metric":"rejection_rate"},
+  {"id":"S02","name":"tampered_result","mechanism":"RFC8785 output hash","metric":"rejection_rate"},
+  {"id":"S03","name":"nonce_replay","mechanism":"persistent nonce store","metric":"replay_block_rate"},
+  {"id":"S04","name":"late_attempt","mechanism":"current attempt binding","metric":"late_result_block_rate"},
+  {"id":"S05","name":"duplicate_payment","mechanism":"settlement idempotency","metric":"duplicate_payment_count"},
+  {"id":"S06","name":"illegal_contract_call","mechanism":"Signer policy","metric":"illegal_call_block_rate"},
+  {"id":"S07","name":"gas_limit_abuse","mechanism":"Signer ceilings","metric":"policy_block_rate"},
+  {"id":"S08","name":"relay_crash","mechanism":"raw transaction journal","metric":"duplicate_broadcast_count"},
+  {"id":"S09","name":"rpc_interruption","mechanism":"retry and DLQ","metric":"recovery_rate"},
+  {"id":"S10","name":"chain_reorganization","mechanism":"confirmation and orphan audit","metric":"consistency_recovery_rate"},
+  {"id":"S11","name":"worker_lease_contention","mechanism":"atomic lease","metric":"double_lease_count"},
+  {"id":"S12","name":"artifact_path_traversal","mechanism":"controlled artifact roots and generated IDs","metric":"path_escape_block_rate"},
+  {"id":"S13","name":"malicious_content_signing_inducement","mechanism":"Runner and Signer trust-boundary separation","metric":"unauthorized_signing_block_rate"},
+  {"id":"S14","name":"requester_wallet_regression","mechanism":"wallet checkpoint","metric":"address_and_keystore_hash_match"}
+]

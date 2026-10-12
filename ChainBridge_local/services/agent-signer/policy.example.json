@@ -1,0 +1,17 @@
+{
+  "replace-agent-slug": {
+    "did": "did:local:replace-agent-slug",
+    "chainId": 31339,
+    "homeWallet": "0x0000000000000000000000000000000000000000",
+    "allowedContracts": {
+      "0x0000000000000000000000000000000000000000": {
+        "selectors": ["0x00000000"]
+      }
+    },
+    "allowedRouteKeys": [],
+    "maxValueWei": "0",
+    "maxGas": 500000,
+    "maxGasPriceWei": "100000000000",
+    "maxTtlSeconds": 300
+  }
+}

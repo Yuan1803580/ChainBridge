@@ -1,0 +1,9 @@
+{
+  "runId": "1a13bf8a-25b6-432c-b2ef-1f41777e0dea",
+  "scenarioId": "REAL-F2",
+  "passed": false,
+  "startedAt": "2026-08-11T22:59:05.124713Z",
+  "finishedAt": "2026-08-11T22:59:08.127161Z",
+  "runnerDurationMs": 3001,
+  "error": "RuntimeError: POST /api/v1/workflows/81d0b7c3-0ec6-4266-8340-828f29067400/coordinate failed (409): {\"error\":{\"code\":\"HTTP_409\",\"message\":\"Workflow coordination is already in progress\"}}"
+}

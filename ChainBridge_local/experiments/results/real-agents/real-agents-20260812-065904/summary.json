@@ -1,0 +1,46 @@
+{
+  "suiteId": "real-agents-20260812-065904",
+  "startedAt": "2026-08-11T22:59:04.958853Z",
+  "finishedAt": "2026-08-11T22:59:18.934126Z",
+  "apiUrl": "http://127.0.0.1:8200",
+  "totalRuns": 3,
+  "passed": 1,
+  "failed": 2,
+  "allPassed": false,
+  "failures": [
+    {
+      "scenarioId": "REAL-F2",
+      "error": "RuntimeError: POST /api/v1/workflows/81d0b7c3-0ec6-4266-8340-828f29067400/coordinate failed (409): {\"error\":{\"code\":\"HTTP_409\",\"message\":\"Workflow coordination is already in progress\"}}"
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "error": "RuntimeError: Workflow 09570c6f-abb9-40b0-8df5-1987d1a0b11e did not terminate after 30 coordination steps"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenarioId": "REAL-F1",
+      "runs": 1,
+      "passed": 1,
+      "failed": 0,
+      "passRate": 1.0,
+      "averageRunnerDurationMs": 39.0
+    },
+    {
+      "scenarioId": "REAL-F2",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 3001.0
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 10709.0
+    }
+  ]
+}

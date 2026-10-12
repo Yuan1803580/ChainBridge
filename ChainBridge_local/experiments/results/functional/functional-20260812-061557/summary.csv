@@ -1,0 +1,8 @@
+﻿scenario_id,scenario_name,runs,passed,failed,pass_rate,average_duration_ms,median_duration_ms,min_duration_ms,max_duration_ms
+F1,single_node_success,3,3,0,1.0,3864.67,3858,3855,3881
+F2,dependent_dag_success,3,3,0,1.0,29742.67,29580,29577,30071
+F3,agent_timeout_recovery,3,3,0,1.0,30079.33,29994,29624,30620
+F4,review_failure_recovery_gate,3,3,0,1.0,3753.67,3766,3705,3790
+F5,relay_crash_recovery,3,3,0,1.0,29777.33,29689,29520,30123
+F6,payout_failure_recovery,3,3,0,1.0,3811.33,3866,3658,3910
+F7,late_attempt_rejection,3,3,0,1.0,3754.67,3753,3736,3775

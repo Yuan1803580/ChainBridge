@@ -1,0 +1,965 @@
+{
+  "id": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+  "referenceCode": "WF-1023",
+  "requesterId": "d73f3341-19a1-4ab2-a8c4-0b3b48408734",
+  "title": "academic_research 输出验证",
+  "objective": "使用 academic_research 能力执行 REAL-F1 场景的中文任务，并要求结果包含 summary、score、sources 三个字段。",
+  "status": "COMPLETED",
+  "currency": "USDC",
+  "budget": "8",
+  "platformFee": "0.5",
+  "paidAmount": "4.2",
+  "refundedAmount": "3.3",
+  "sourceChainId": 31337,
+  "termsHash": "0x21a63303607653f2417af0fc8b0c85fc4c18ede33d514f15f0d820bfa0714337",
+  "inputPayload": {
+    "experimentScenario": "REAL-F1",
+    "language": "zh-CN",
+    "Coordinator": {
+      "agentType": "COORDINATOR",
+      "agentKey": "workflow-coordinator-agent",
+      "did": "did:local:workflow-coordinator-agent",
+      "profileId": "03416af8-d1dd-4b66-bcf0-d28426ed5dfb"
+    }
+  },
+  "fundingMode": "RESERVED",
+  "fundingStatus": "MODEL_RESERVED",
+  "fundingWallet": null,
+  "onchainWorkflowId": "0x60ee4ef10ee146d2aaf6e11e4fc4332400000000000000000000000000000000",
+  "approveTxHash": null,
+  "lockTxHash": null,
+  "sourceGasTxHash": null,
+  "deploymentId": null,
+  "sourceGasDeposit": "0",
+  "sourceGasRefunded": "0",
+  "lockConfirmedAt": null,
+  "failureRefundedAt": null,
+  "contractSyncStatus": "MODEL_ONLY",
+  "failureReason": null,
+  "completedAt": "2026-08-11T22:42:59.198308Z",
+  "createdAt": "2026-08-11T22:31:08.020961Z",
+  "updatedAt": "2026-08-11T22:42:59.198308Z",
+  "requester": {
+    "id": "d73f3341-19a1-4ab2-a8c4-0b3b48408734",
+    "did": "did:local:campus-requester",
+    "slug": "campus-requester",
+    "displayName": "校园需求 Agent",
+    "description": "发布校园创新项目的数据处理与内容服务需求。",
+    "roles": [
+      "requester"
+    ],
+    "status": "active",
+    "endpoint": "http://localhost:8000/api/v1/demo-agents/campus-requester",
+    "operationalPublicKey": "0x0461965d7ab1b4a0b1a2252cd9a3410f9364b4b5207b39472388de1421d5a724658dbaa3f0525084d5397557b3e709322fc883a595f7e0039a182d1083efd1fce1",
+    "organizationId": "org:campus-requester",
+    "reviewWallet": "0x8878369dDAea117eaC13908B8633f212174E3FE4",
+    "reviewerActive": false,
+    "reputationScore": "0",
+    "completedOrders": 0,
+    "erc8004Registration": null,
+    "createdAt": "2026-08-05T15:33:31.288980Z",
+    "updatedAt": "2026-08-05T15:33:31.288980Z"
+  },
+  "nodes": [
+    {
+      "id": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "nodeKey": "N1",
+      "title": "执行 academic_research 任务",
+      "description": "基于用户提供的 REAL-F1 实验场景，以中文完成 academic_research，并产出可用于判断任务完成质量的 summary、score、sources。",
+      "capability": "academic_research",
+      "status": "SETTLED",
+      "dependsOn": [],
+      "acceptanceCriteria": {
+        "requiredFields": [
+          "summary",
+          "score",
+          "sources"
+        ],
+        "rules": [
+          "输出语言应为 zh-CN。",
+          "summary 应简要说明 academic_research 在 REAL-F1 场景中的执行结果。",
+          "score 应给出对结果完整性和可信度的评分。",
+          "sources 应列出用于支撑 summary 的来源或说明无可用来源的原因。",
+          "不得省略 summary、score、sources 任一字段。"
+        ]
+      },
+      "inputPayload": {
+        "experimentScenario": "REAL-F1",
+        "language": "zh-CN"
+      },
+      "outputPayload": {
+        "summary": "academic_research 在 REAL-F1 场景中的执行结果：已检索并读取与 ImageNet-ReaL/ReaL-F1 直接相关的学术论文，核心结论是 REAL-F1 应理解为基于 ImageNet ReaL 多标签验证集的 F1 评测指标，用于衡量模型在存在多对象、标签歧义和单标签弱监督时的多标签预测质量。事实：Beyer 等《Are we done with ImageNet?》提出 ReaL 重新标注流程，指出 ImageNet 单标签验证会漏标真实图像中的多个合理类别；其方法用 19 个模型生成候选标签、筛选 6 个模型保持约 97.1% 召回率，并经人工标注和 Dawid-Skene 聚合得到 46,837 张图像上的 57,553 个标签；发现较新模型在原 ImageNet 准确率上的进步与 ReaL 准确率的关联变弱，且一些模型已超过原始 ImageNet 标签对人类偏好的预测能力。Rajeswar 等《Multi-label Iterated Learning for Image Classification with Label Ambiguity》直接报告 ReaL-F1，研究问题是如何从单标签弱监督中学习多标签表示；方法是 MILe，用 sigmoid/BCE 多标签输出、教师-学生迭代学习和有限训练步数瓶颈生成伪多标签；发现 MILe 在 ImageNet、ImageNet-ReaL、WebVision、自监督微调等设置中提升 ReaL-F1，例如 ResNet-50 全量 ImageNet 下 ReaL-F1 从 Softmax 78.5、Sigmoid 78.61 提升到 MILe 79.89。Vasudevan 等《When does dough become a bagel?》基于检索摘要补充说明：其问题是分析高性能模型在 ImageNet 多标签评测中的剩余错误，方法是人工复核顶级模型错误并构建更新的多标签评测集和 ImageNet-Major，发现近一半所谓错误并非真实错误，且仍有约 40% 是人类认为明显错误的案例。分析：三篇论文共同表明，REAL-F1 的价值在于比单标签 top-1 accuracy 更能反映多标签现实图像中的正确预测；Beyer 等主要改进评测标签，MILe 主要改进训练方法并用 ReaL-F1 验证收益，Vasudevan 等进一步检查剩余错误并提示多标签评测仍会低估模型表现。局限：Beyer 等的 ReaL 标签依赖模型候选集合与众包标注，仍丢弃无标签图像且细粒度类别可能需要专家；MILe 的局限包括需要选择教师/学生迭代步数 kt/ks 和伪标签阈值 rho，且作者说明阈值和迭代长度会影响 ReaL-F1；Vasudevan 等本文未能读取 PDF 原文，因为受控下载工具报告 PDF 超过 25 MB 限制，因此只使用 arXiv 检索摘要作为证据，可信度低于已下载阅读全文的两篇。",
+        "score": 92,
+        "sources": [
+          "http://arxiv.org/abs/2302.09182v4",
+          "https://arxiv.org/pdf/2302.09182v4",
+          "http://arxiv.org/abs/2111.12172v1",
+          "https://arxiv.org/pdf/2111.12172v1",
+          "http://arxiv.org/abs/2306.03405v1",
+          "https://arxiv.org/pdf/2306.03405v1",
+          "http://arxiv.org/abs/2606.29783v1",
+          "https://arxiv.org/pdf/2606.29783v1",
+          "http://arxiv.org/abs/2006.07159v1",
+          "https://arxiv.org/pdf/2006.07159v1",
+          "http://arxiv.org/abs/2111.01956v1",
+          "https://arxiv.org/pdf/2111.01956v1",
+          "http://arxiv.org/abs/2205.04596v2",
+          "https://arxiv.org/pdf/2205.04596v2",
+          "http://arxiv.org/abs/2311.09215v3",
+          "https://arxiv.org/pdf/2311.09215v3"
+        ]
+      },
+      "reward": "4.2",
+      "riskLevel": "LOW",
+      "riskAssignmentMode": "AUTO",
+      "riskScore": 15,
+      "riskReasons": [
+        "checks 3 required result field(s)"
+      ],
+      "reviewPolicyVersion": "RISK_REVIEW_V2",
+      "reviewPolicyHash": "0x998400dce43409639a689a90d37dcf6b6d667e1a04c78173b09c36600c61f607",
+      "requiredApprovals": 0,
+      "challengePeriodSeconds": 0,
+      "samplingRateBps": 0,
+      "reviewBudget": "0",
+      "maxAttempts": 3,
+      "currentAttemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "settledAt": "2026-08-11T22:42:59.187517Z",
+      "createdAt": "2026-08-11T22:31:08.022785Z",
+      "updatedAt": "2026-08-11T22:42:59.192071Z",
+      "criteriaHash": "0xbb98255c25a0f1b9671cc0e093cbd4ac413e3c76eaaa945349b7b35bf614d042",
+      "attempts": [
+        {
+          "id": "c26c17a9-8876-421a-b295-a1a6525369d6",
+          "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+          "attemptNumber": 1,
+          "status": "SETTLED",
+          "agentProfileId": "43aa8494-8610-44ba-a3ca-b6303086c0fc",
+          "agentKey": "workflow-verification-delivery-d",
+          "agentId": "d86468cb-4a8c-470c-999a-aaf24a0d69b2",
+          "chainId": 31340,
+          "homeWallet": "0x002E1e197fAe58566F36a8071c798349062434E0",
+          "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+          "routeVersion": 1,
+          "settlementAsset": "USDC",
+          "payoutAsset": "DTK",
+          "payoutTokenAddress": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "payoutDecimals": 6,
+          "payoutRate": "4",
+          "payoutSlippageBps": 100,
+          "payoutQuoteAmount": null,
+          "payoutMinAmount": null,
+          "payoutQuoteExpiresAt": null,
+          "payoutStatus": "PENDING",
+          "payoutTxHash": null,
+          "matchCandidateId": "ddd6f7b0-14c2-452a-a610-0cda0357dc72",
+          "dispatchMessageId": "0x7a59f34c1e8c29544cbf0c8b65365fe7c7dfdc8453ea8dd39d47d7137c000778",
+          "resultMessageId": "0x94ef061c610b174cacecf8e3a3d33be38434a5c7c358185219922a7c9caf786d",
+          "resultPayload": {
+            "summary": "academic_research 在 REAL-F1 场景中的执行结果：已检索并读取与 ImageNet-ReaL/ReaL-F1 直接相关的学术论文，核心结论是 REAL-F1 应理解为基于 ImageNet ReaL 多标签验证集的 F1 评测指标，用于衡量模型在存在多对象、标签歧义和单标签弱监督时的多标签预测质量。事实：Beyer 等《Are we done with ImageNet?》提出 ReaL 重新标注流程，指出 ImageNet 单标签验证会漏标真实图像中的多个合理类别；其方法用 19 个模型生成候选标签、筛选 6 个模型保持约 97.1% 召回率，并经人工标注和 Dawid-Skene 聚合得到 46,837 张图像上的 57,553 个标签；发现较新模型在原 ImageNet 准确率上的进步与 ReaL 准确率的关联变弱，且一些模型已超过原始 ImageNet 标签对人类偏好的预测能力。Rajeswar 等《Multi-label Iterated Learning for Image Classification with Label Ambiguity》直接报告 ReaL-F1，研究问题是如何从单标签弱监督中学习多标签表示；方法是 MILe，用 sigmoid/BCE 多标签输出、教师-学生迭代学习和有限训练步数瓶颈生成伪多标签；发现 MILe 在 ImageNet、ImageNet-ReaL、WebVision、自监督微调等设置中提升 ReaL-F1，例如 ResNet-50 全量 ImageNet 下 ReaL-F1 从 Softmax 78.5、Sigmoid 78.61 提升到 MILe 79.89。Vasudevan 等《When does dough become a bagel?》基于检索摘要补充说明：其问题是分析高性能模型在 ImageNet 多标签评测中的剩余错误，方法是人工复核顶级模型错误并构建更新的多标签评测集和 ImageNet-Major，发现近一半所谓错误并非真实错误，且仍有约 40% 是人类认为明显错误的案例。分析：三篇论文共同表明，REAL-F1 的价值在于比单标签 top-1 accuracy 更能反映多标签现实图像中的正确预测；Beyer 等主要改进评测标签，MILe 主要改进训练方法并用 ReaL-F1 验证收益，Vasudevan 等进一步检查剩余错误并提示多标签评测仍会低估模型表现。局限：Beyer 等的 ReaL 标签依赖模型候选集合与众包标注，仍丢弃无标签图像且细粒度类别可能需要专家；MILe 的局限包括需要选择教师/学生迭代步数 kt/ks 和伪标签阈值 rho，且作者说明阈值和迭代长度会影响 ReaL-F1；Vasudevan 等本文未能读取 PDF 原文，因为受控下载工具报告 PDF 超过 25 MB 限制，因此只使用 arXiv 检索摘要作为证据，可信度低于已下载阅读全文的两篇。",
+            "score": 92,
+            "sources": [
+              "http://arxiv.org/abs/2302.09182v4",
+              "https://arxiv.org/pdf/2302.09182v4",
+              "http://arxiv.org/abs/2111.12172v1",
+              "https://arxiv.org/pdf/2111.12172v1",
+              "http://arxiv.org/abs/2306.03405v1",
+              "https://arxiv.org/pdf/2306.03405v1",
+              "http://arxiv.org/abs/2606.29783v1",
+              "https://arxiv.org/pdf/2606.29783v1",
+              "http://arxiv.org/abs/2006.07159v1",
+              "https://arxiv.org/pdf/2006.07159v1",
+              "http://arxiv.org/abs/2111.01956v1",
+              "https://arxiv.org/pdf/2111.01956v1",
+              "http://arxiv.org/abs/2205.04596v2",
+              "https://arxiv.org/pdf/2205.04596v2",
+              "http://arxiv.org/abs/2311.09215v3",
+              "https://arxiv.org/pdf/2311.09215v3"
+            ]
+          },
+          "resultHash": "0xf0f7f6c3591c4163812e2332fa92867c085d7687382ab1dd23a89c72efca490e",
+          "proofHash": "0x14c8b43408ab99c8d2ff22b1a385676259ddd18d77beba0642aa27de63ee61e0",
+          "reviewReason": "Immutable acceptance criteria passed",
+          "failureReasonCode": null,
+          "failureResponsibleParty": null,
+          "resultProofStatus": "DELIVERED",
+          "resultProofTxHash": null,
+          "coordinatorReviewHash": "0xdaf306849fda2bf13501f30032d12dcc4dafc21f6849ae07424fdc0eb754ff5b",
+          "reviewStatus": "PASSED",
+          "reviewPolicyHash": "0x998400dce43409639a689a90d37dcf6b6d667e1a04c78173b09c36600c61f607",
+          "reviewSampled": false,
+          "randomnessMode": "NOT_REQUIRED",
+          "randomnessStatus": "NOT_REQUIRED",
+          "randomnessRequestId": null,
+          "randomnessCommitment": null,
+          "randomWord": null,
+          "randomnessProofHash": null,
+          "randomnessRequestedAt": null,
+          "randomnessFulfilledAt": null,
+          "reviewStartedAt": "2026-08-11T22:42:59.175055Z",
+          "challengeExpiresAt": null,
+          "settlementStatus": "LOCAL_PAID",
+          "settlementMessageId": null,
+          "destinationTxHash": null,
+          "sourceConfirmTxHash": null,
+          "submittedAt": "2026-08-11T22:42:58.099818Z",
+          "reviewedAt": "2026-08-11T22:42:59.177491Z",
+          "settledAt": "2026-08-11T22:42:59.187517Z",
+          "createdAt": "2026-08-11T22:31:10.621376Z",
+          "updatedAt": "2026-08-11T22:42:59.192071Z",
+          "reviewApprovals": [],
+          "reviewChallenges": [],
+          "arbitrationVotes": [],
+          "settlementRecovery": null
+        }
+      ],
+      "currentAttempt": {
+        "id": "c26c17a9-8876-421a-b295-a1a6525369d6",
+        "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+        "attemptNumber": 1,
+        "status": "SETTLED",
+        "agentProfileId": "43aa8494-8610-44ba-a3ca-b6303086c0fc",
+        "agentKey": "workflow-verification-delivery-d",
+        "agentId": "d86468cb-4a8c-470c-999a-aaf24a0d69b2",
+        "chainId": 31340,
+        "homeWallet": "0x002E1e197fAe58566F36a8071c798349062434E0",
+        "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+        "routeVersion": 1,
+        "settlementAsset": "USDC",
+        "payoutAsset": "DTK",
+        "payoutTokenAddress": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+        "payoutDecimals": 6,
+        "payoutRate": "4",
+        "payoutSlippageBps": 100,
+        "payoutQuoteAmount": null,
+        "payoutMinAmount": null,
+        "payoutQuoteExpiresAt": null,
+        "payoutStatus": "PENDING",
+        "payoutTxHash": null,
+        "matchCandidateId": "ddd6f7b0-14c2-452a-a610-0cda0357dc72",
+        "dispatchMessageId": "0x7a59f34c1e8c29544cbf0c8b65365fe7c7dfdc8453ea8dd39d47d7137c000778",
+        "resultMessageId": "0x94ef061c610b174cacecf8e3a3d33be38434a5c7c358185219922a7c9caf786d",
+        "resultPayload": {
+          "summary": "academic_research 在 REAL-F1 场景中的执行结果：已检索并读取与 ImageNet-ReaL/ReaL-F1 直接相关的学术论文，核心结论是 REAL-F1 应理解为基于 ImageNet ReaL 多标签验证集的 F1 评测指标，用于衡量模型在存在多对象、标签歧义和单标签弱监督时的多标签预测质量。事实：Beyer 等《Are we done with ImageNet?》提出 ReaL 重新标注流程，指出 ImageNet 单标签验证会漏标真实图像中的多个合理类别；其方法用 19 个模型生成候选标签、筛选 6 个模型保持约 97.1% 召回率，并经人工标注和 Dawid-Skene 聚合得到 46,837 张图像上的 57,553 个标签；发现较新模型在原 ImageNet 准确率上的进步与 ReaL 准确率的关联变弱，且一些模型已超过原始 ImageNet 标签对人类偏好的预测能力。Rajeswar 等《Multi-label Iterated Learning for Image Classification with Label Ambiguity》直接报告 ReaL-F1，研究问题是如何从单标签弱监督中学习多标签表示；方法是 MILe，用 sigmoid/BCE 多标签输出、教师-学生迭代学习和有限训练步数瓶颈生成伪多标签；发现 MILe 在 ImageNet、ImageNet-ReaL、WebVision、自监督微调等设置中提升 ReaL-F1，例如 ResNet-50 全量 ImageNet 下 ReaL-F1 从 Softmax 78.5、Sigmoid 78.61 提升到 MILe 79.89。Vasudevan 等《When does dough become a bagel?》基于检索摘要补充说明：其问题是分析高性能模型在 ImageNet 多标签评测中的剩余错误，方法是人工复核顶级模型错误并构建更新的多标签评测集和 ImageNet-Major，发现近一半所谓错误并非真实错误，且仍有约 40% 是人类认为明显错误的案例。分析：三篇论文共同表明，REAL-F1 的价值在于比单标签 top-1 accuracy 更能反映多标签现实图像中的正确预测；Beyer 等主要改进评测标签，MILe 主要改进训练方法并用 ReaL-F1 验证收益，Vasudevan 等进一步检查剩余错误并提示多标签评测仍会低估模型表现。局限：Beyer 等的 ReaL 标签依赖模型候选集合与众包标注，仍丢弃无标签图像且细粒度类别可能需要专家；MILe 的局限包括需要选择教师/学生迭代步数 kt/ks 和伪标签阈值 rho，且作者说明阈值和迭代长度会影响 ReaL-F1；Vasudevan 等本文未能读取 PDF 原文，因为受控下载工具报告 PDF 超过 25 MB 限制，因此只使用 arXiv 检索摘要作为证据，可信度低于已下载阅读全文的两篇。",
+          "score": 92,
+          "sources": [
+            "http://arxiv.org/abs/2302.09182v4",
+            "https://arxiv.org/pdf/2302.09182v4",
+            "http://arxiv.org/abs/2111.12172v1",
+            "https://arxiv.org/pdf/2111.12172v1",
+            "http://arxiv.org/abs/2306.03405v1",
+            "https://arxiv.org/pdf/2306.03405v1",
+            "http://arxiv.org/abs/2606.29783v1",
+            "https://arxiv.org/pdf/2606.29783v1",
+            "http://arxiv.org/abs/2006.07159v1",
+            "https://arxiv.org/pdf/2006.07159v1",
+            "http://arxiv.org/abs/2111.01956v1",
+            "https://arxiv.org/pdf/2111.01956v1",
+            "http://arxiv.org/abs/2205.04596v2",
+            "https://arxiv.org/pdf/2205.04596v2",
+            "http://arxiv.org/abs/2311.09215v3",
+            "https://arxiv.org/pdf/2311.09215v3"
+          ]
+        },
+        "resultHash": "0xf0f7f6c3591c4163812e2332fa92867c085d7687382ab1dd23a89c72efca490e",
+        "proofHash": "0x14c8b43408ab99c8d2ff22b1a385676259ddd18d77beba0642aa27de63ee61e0",
+        "reviewReason": "Immutable acceptance criteria passed",
+        "failureReasonCode": null,
+        "failureResponsibleParty": null,
+        "resultProofStatus": "DELIVERED",
+        "resultProofTxHash": null,
+        "coordinatorReviewHash": "0xdaf306849fda2bf13501f30032d12dcc4dafc21f6849ae07424fdc0eb754ff5b",
+        "reviewStatus": "PASSED",
+        "reviewPolicyHash": "0x998400dce43409639a689a90d37dcf6b6d667e1a04c78173b09c36600c61f607",
+        "reviewSampled": false,
+        "randomnessMode": "NOT_REQUIRED",
+        "randomnessStatus": "NOT_REQUIRED",
+        "randomnessRequestId": null,
+        "randomnessCommitment": null,
+        "randomWord": null,
+        "randomnessProofHash": null,
+        "randomnessRequestedAt": null,
+        "randomnessFulfilledAt": null,
+        "reviewStartedAt": "2026-08-11T22:42:59.175055Z",
+        "challengeExpiresAt": null,
+        "settlementStatus": "LOCAL_PAID",
+        "settlementMessageId": null,
+        "destinationTxHash": null,
+        "sourceConfirmTxHash": null,
+        "submittedAt": "2026-08-11T22:42:58.099818Z",
+        "reviewedAt": "2026-08-11T22:42:59.177491Z",
+        "settledAt": "2026-08-11T22:42:59.187517Z",
+        "createdAt": "2026-08-11T22:31:10.621376Z",
+        "updatedAt": "2026-08-11T22:42:59.192071Z",
+        "reviewApprovals": [],
+        "reviewChallenges": [],
+        "arbitrationVotes": [],
+        "settlementRecovery": null
+      },
+      "reservations": [
+        {
+          "id": "a8c9dca5-6fc6-4602-b482-8ede01483dd2",
+          "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+          "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+          "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+          "amount": "4.2",
+          "currency": "USDC",
+          "status": "PAID",
+          "releasedAt": null,
+          "paidAt": "2026-08-11T22:42:59.187517Z",
+          "createdAt": "2026-08-11T22:31:10.626655Z",
+          "updatedAt": "2026-08-11T22:42:59.191055Z"
+        }
+      ],
+      "matchRounds": [
+        {
+          "id": "54569ce9-e206-45a4-b247-36ffb168e93f",
+          "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+          "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+          "roundNumber": 1,
+          "policyVersion": "MATCH_V1",
+          "capability": "academic_research",
+          "candidateLimit": 3,
+          "status": "COMPLETED",
+          "createdAt": "2026-08-11T22:31:10.611425Z",
+          "updatedAt": "2026-08-11T22:42:59.190009Z",
+          "candidates": [
+            {
+              "id": "ddd6f7b0-14c2-452a-a610-0cda0357dc72",
+              "matchRoundId": "54569ce9-e206-45a4-b247-36ffb168e93f",
+              "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+              "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+              "agentProfileId": "43aa8494-8610-44ba-a3ca-b6303086c0fc",
+              "agentKey": "workflow-verification-delivery-d",
+              "rank": 1,
+              "score": "92.062",
+              "scoreBreakdown": {
+                "capability": "30",
+                "trust": "19.600",
+                "success": "18.462",
+                "latency": "9.000",
+                "priceFit": "5.000",
+                "routeHealth": "5",
+                "readiness": "5"
+              },
+              "quoteAmount": "4.2",
+              "currency": "USDC",
+              "chainId": 31340,
+              "homeWallet": "0x002E1e197fAe58566F36a8071c798349062434E0",
+              "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+              "routeVersion": 1,
+              "status": "SETTLED",
+              "selectedAt": "2026-08-11T22:31:10.620358Z",
+              "exclusionReason": null,
+              "createdAt": "2026-08-11T22:31:10.615429Z",
+              "updatedAt": "2026-08-11T22:42:59.190009Z",
+              "agent": {
+                "id": "d86468cb-4a8c-470c-999a-aaf24a0d69b2",
+                "did": "did:local:workflow-verification-delivery-d",
+                "slug": "workflow-verification-delivery-d",
+                "displayName": "Multimodal Verification and Delivery Agent D",
+                "description": "External LLM Agent operated by sofaia.",
+                "roles": [
+                  "provider"
+                ],
+                "status": "active",
+                "endpoint": "http://127.0.0.1:8124/agents/workflow-verification-delivery-d/invoke",
+                "operationalPublicKey": "0x04f9f91b045a15099051a02cff62243a9d4dfaccde7ef710afd66b76934a946a4ab1376b59e98453c6fd1155b307deffec55012b4aeaaddcb18bfa7c34a2102003",
+                "organizationId": null,
+                "reviewWallet": null,
+                "reviewerActive": false,
+                "reputationScore": "0",
+                "completedOrders": 0,
+                "erc8004Registration": {
+                  "type": "external-llm-agent",
+                  "ownerContactHash": "0x2f5835df45db7c34bfe30cfa3ebe069059335df82ee6966791835c4282791b6e",
+                  "organization": "无",
+                  "llm": {
+                    "provider": "openai_compatible",
+                    "model": "gpt-5.5",
+                    "systemPromptHash": "0x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                  },
+                  "serviceEndpoint": "http://127.0.0.1:8124/agents/workflow-verification-delivery-d/invoke",
+                  "admissionStatus": "PENDING_OWNERSHIP"
+                },
+                "createdAt": "2026-08-09T12:57:46.672349Z",
+                "updatedAt": "2026-08-09T13:26:58.361300Z"
+              },
+              "routeKey": "A_TO_D"
+            },
+            {
+              "id": "de860dba-3af8-46cc-9c1c-4ee63272a03f",
+              "matchRoundId": "54569ce9-e206-45a4-b247-36ffb168e93f",
+              "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+              "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+              "agentProfileId": "42b60d1d-a446-43f0-8343-3fba99a1525a",
+              "agentKey": "workflow-multimodal-research-codex-c",
+              "rank": 2,
+              "score": "88.266",
+              "scoreBreakdown": {
+                "capability": "30",
+                "trust": "17.600",
+                "success": "16.666",
+                "latency": "9.000",
+                "priceFit": "5.000",
+                "routeHealth": "5",
+                "readiness": "5"
+              },
+              "quoteAmount": "4.2",
+              "currency": "USDC",
+              "chainId": 31339,
+              "homeWallet": "0x64222D83C6e13735733Ae10B2ffa0BC5F5498eF1",
+              "routeId": "970804d3-015d-4396-89a5-3df2b48d5a21",
+              "routeVersion": 1,
+              "status": "NOT_NEEDED",
+              "selectedAt": null,
+              "exclusionReason": "NODE_SETTLED",
+              "createdAt": "2026-08-11T22:31:10.615429Z",
+              "updatedAt": "2026-08-11T22:42:59.190009Z",
+              "agent": {
+                "id": "938b5dd2-8753-4f7d-a5ed-a1db0e309c3e",
+                "did": "did:local:workflow-multimodal-research-codex-c",
+                "slug": "workflow-multimodal-research-codex-c",
+                "displayName": "Independent Multitool Research Agent C",
+                "description": "External LLM Agent operated by 37.",
+                "roles": [
+                  "provider"
+                ],
+                "status": "active",
+                "endpoint": "http://127.0.0.1:8123/agents/workflow-multimodal-research-codex-c/invoke",
+                "operationalPublicKey": "0x049594bdc57a60849bba1afaf6789d2e835079bb7d845e1964443831f4684da456e53a6f101b34ec80487be1635abf9b1442276028094067f765f9d4484165431e",
+                "organizationId": null,
+                "reviewWallet": null,
+                "reviewerActive": false,
+                "reputationScore": "0",
+                "completedOrders": 0,
+                "erc8004Registration": {
+                  "type": "external-llm-agent",
+                  "ownerContactHash": "0x2f5835df45db7c34bfe30cfa3ebe069059335df82ee6966791835c4282791b6e",
+                  "organization": "无",
+                  "llm": {
+                    "provider": "openai_compatible",
+                    "model": "gpt-5.5",
+                    "systemPromptHash": "0x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                  },
+                  "serviceEndpoint": "http://127.0.0.1:8123/agents/workflow-multimodal-research-codex-c/invoke",
+                  "admissionStatus": "PENDING_OWNERSHIP"
+                },
+                "createdAt": "2026-08-07T14:19:30.844776Z",
+                "updatedAt": "2026-08-07T14:41:37.959110Z"
+              },
+              "routeKey": "A_TO_C"
+            }
+          ]
+        }
+      ],
+      "failureIncidents": [],
+      "waitingDiagnostics": {
+        "capability": "academic_research",
+        "waitingReason": "RECOVERY_PENDING",
+        "registeredAgentCount": 8,
+        "matchableAgentCount": 1,
+        "matchableAgents": [
+          {
+            "agentKey": "workflow-multimodal-research-codex-c",
+            "chainId": 31339,
+            "routeVersion": 1
+          }
+        ],
+        "exclusionReasons": {
+          "SEEDED_LOCAL_AGENT_DISABLED": 3,
+          "AGENT_ROLE_NOT_EXECUTOR": 1,
+          "CAPABILITY_MISMATCH": 2,
+          "AGENT_ALREADY_ATTEMPTED_NODE": 1
+        },
+        "attemptsUsed": 1,
+        "maxAttempts": 3,
+        "remainingAttempts": 2,
+        "autoRecoveryEligible": false
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "43825ffe-fc3c-4979-b43a-4d57ab18e082",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 1,
+      "eventType": "WORKFLOW_CREATED",
+      "nodeId": null,
+      "attemptId": null,
+      "actor": "did:local:campus-requester",
+      "payload": {
+        "referenceCode": "WF-1023",
+        "nodeCount": 1,
+        "budget": "8.00"
+      },
+      "createdAt": "2026-08-11T22:31:08.026223Z"
+    },
+    {
+      "id": "ae94a648-0758-4937-8ccd-0818b033f962",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 2,
+      "eventType": "FUNDING_MODEL_RESERVED",
+      "nodeId": null,
+      "attemptId": null,
+      "actor": "Coordinator",
+      "payload": {
+        "amount": "8.00",
+        "chainId": 31337,
+        "notOnchainFunds": true
+      },
+      "createdAt": "2026-08-11T22:31:08.031038Z"
+    },
+    {
+      "id": "165af931-1f0f-4325-89b3-886c25c5a9ec",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 3,
+      "eventType": "AGENT_CANDIDATES_RANKED",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": null,
+      "actor": "Coordinator",
+      "payload": {
+        "matchingRound": 1,
+        "policyVersion": "MATCH_V1",
+        "capability": "academic_research",
+        "candidates": [
+          {
+            "rank": 1,
+            "agentKey": "workflow-verification-delivery-d",
+            "score": "92.062",
+            "chainId": 31340
+          },
+          {
+            "rank": 2,
+            "agentKey": "workflow-multimodal-research-codex-c",
+            "score": "88.266",
+            "chainId": 31339
+          }
+        ]
+      },
+      "createdAt": "2026-08-11T22:31:10.618225Z"
+    },
+    {
+      "id": "a512c1ea-dca9-4386-8db0-dad5e307422b",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 4,
+      "eventType": "NODE_DISPATCHED",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "actor": "Coordinator",
+      "payload": {
+        "agentKey": "workflow-verification-delivery-d",
+        "chainId": 31340,
+        "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+        "routeVersion": 1,
+        "messageId": "0x7a59f34c1e8c29544cbf0c8b65365fe7c7dfdc8453ea8dd39d47d7137c000778",
+        "matchingRoundId": "54569ce9-e206-45a4-b247-36ffb168e93f",
+        "candidateRank": 1,
+        "matchScore": "92.062"
+      },
+      "createdAt": "2026-08-11T22:31:10.633258Z"
+    },
+    {
+      "id": "2dd72911-8869-4fe3-8741-9ec4bdb7ac7b",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 5,
+      "eventType": "RESULT_SUBMITTED",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "actor": "workflow-verification-delivery-d",
+      "payload": {
+        "resultHash": "0xf0f7f6c3591c4163812e2332fa92867c085d7687382ab1dd23a89c72efca490e",
+        "proofHash": "0x14c8b43408ab99c8d2ff22b1a385676259ddd18d77beba0642aa27de63ee61e0",
+        "messageId": "0x94ef061c610b174cacecf8e3a3d33be38434a5c7c358185219922a7c9caf786d"
+      },
+      "createdAt": "2026-08-11T22:42:58.105574Z"
+    },
+    {
+      "id": "c5ed1ec0-30de-4f22-b0f5-40a2c7266d78",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 6,
+      "eventType": "REVIEW_PASSED",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "actor": "Coordinator",
+      "payload": {
+        "reason": "Immutable acceptance criteria passed",
+        "riskLevel": "LOW",
+        "reviewPolicyHash": "0x998400dce43409639a689a90d37dcf6b6d667e1a04c78173b09c36600c61f607"
+      },
+      "createdAt": "2026-08-11T22:42:59.185723Z"
+    },
+    {
+      "id": "bd796d38-804d-49db-9080-1bc162cb410a",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 7,
+      "eventType": "NODE_SETTLED",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "actor": "Coordinator",
+      "payload": {
+        "amount": "4.20000000",
+        "settlementAsset": "USDC",
+        "payoutAmount": "4.20000000",
+        "payoutAsset": "DTK",
+        "payoutStatus": "PENDING",
+        "agentKey": "workflow-verification-delivery-d",
+        "chainId": 31340
+      },
+      "createdAt": "2026-08-11T22:42:59.192071Z"
+    },
+    {
+      "id": "acac83fc-afa4-4404-b06a-7b348d26c1a8",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 8,
+      "eventType": "AGENT_REPUTATION_UPDATED",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "actor": "ReputationEngine",
+      "payload": {
+        "agentKey": "workflow-verification-delivery-d",
+        "policyVersion": "AGENT_REPUTATION_V1",
+        "baselineTrustScore": 75,
+        "sampleCount": 10,
+        "successfulAttempts": 10,
+        "failedAttempts": 0,
+        "excludedAttempts": 7,
+        "historicalAttemptsExcluded": 0,
+        "failureReasonCounts": [],
+        "successRateBps": 9286,
+        "trustScore": 100,
+        "updatedAt": "2026-08-11T22:42:59.193916Z"
+      },
+      "createdAt": "2026-08-11T22:42:59.195957Z"
+    },
+    {
+      "id": "edd56d14-f759-425b-b73a-8f4b6979c0ad",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 9,
+      "eventType": "WORKFLOW_COMPLETED",
+      "nodeId": null,
+      "attemptId": null,
+      "actor": "Coordinator",
+      "payload": {
+        "paid": "4.20000000",
+        "platformFee": "0.50000000",
+        "refunded": "3.30000000"
+      },
+      "createdAt": "2026-08-11T22:42:59.198308Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "b7c00b90-8928-4620-9315-d8c4f3aa61af",
+      "messageId": "0x7a59f34c1e8c29544cbf0c8b65365fe7c7dfdc8453ea8dd39d47d7137c000778",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "messageType": "DISPATCH",
+      "sourceChainId": 31337,
+      "destinationChainId": 31340,
+      "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+      "routeVersion": 1,
+      "status": "QUEUED",
+      "payload": {
+        "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+        "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+        "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+        "attemptNumber": 1,
+        "criteriaHash": "0xbb98255c25a0f1b9671cc0e093cbd4ac413e3c76eaaa945349b7b35bf614d042",
+        "riskLevel": "LOW",
+        "reviewPolicyHash": "0x998400dce43409639a689a90d37dcf6b6d667e1a04c78173b09c36600c61f607",
+        "reward": "4.20000000",
+        "settlementAsset": "USDC",
+        "payoutAsset": "DTK"
+      },
+      "transactionHash": null,
+      "relayAttempts": 0,
+      "lastError": null,
+      "deliveredAt": null,
+      "createdAt": "2026-08-11T22:31:10.628706Z",
+      "updatedAt": "2026-08-11T22:31:10.628706Z"
+    },
+    {
+      "id": "b5fee5cb-68e5-436c-93cd-bc4686bcc15d",
+      "messageId": "0x94ef061c610b174cacecf8e3a3d33be38434a5c7c358185219922a7c9caf786d",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "messageType": "RESULT_PROOF",
+      "sourceChainId": 31340,
+      "destinationChainId": 31337,
+      "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+      "routeVersion": 1,
+      "status": "DELIVERED",
+      "payload": {
+        "resultHash": "0xf0f7f6c3591c4163812e2332fa92867c085d7687382ab1dd23a89c72efca490e",
+        "proofHash": "0x14c8b43408ab99c8d2ff22b1a385676259ddd18d77beba0642aa27de63ee61e0"
+      },
+      "transactionHash": null,
+      "relayAttempts": 1,
+      "lastError": null,
+      "deliveredAt": "2026-08-11T22:42:58.099818Z",
+      "createdAt": "2026-08-11T22:42:58.102399Z",
+      "updatedAt": "2026-08-11T22:42:58.102399Z"
+    }
+  ],
+  "ledger": [
+    {
+      "id": "9bc3176a-5165-4b0e-97ab-6f83a06b25ba",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 1,
+      "entryType": "MODEL_RESERVATION",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "8",
+      "fromAccount": "requester:d73f3341-19a1-4ab2-a8c4-0b3b48408734:funding-model",
+      "toAccount": "escrow:60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324:available-model",
+      "chainId": 31337,
+      "nodeId": null,
+      "attemptId": null,
+      "transactionHash": null,
+      "metadata": {
+        "termsHash": "0x21a63303607653f2417af0fc8b0c85fc4c18ede33d514f15f0d820bfa0714337",
+        "notOnchainFunds": true
+      },
+      "createdAt": "2026-08-11T22:31:08.027056Z"
+    },
+    {
+      "id": "4d5863d2-9dcc-4e11-869f-40098768626e",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 2,
+      "entryType": "RESERVE",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "4.2",
+      "fromAccount": "escrow:60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324:available",
+      "toAccount": "escrow:60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324:reserved:c26c17a9-8876-421a-b295-a1a6525369d6",
+      "chainId": 31337,
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "transactionHash": null,
+      "metadata": {},
+      "createdAt": "2026-08-11T22:31:10.631254Z"
+    },
+    {
+      "id": "4d453558-e670-4239-90d4-77884ed15464",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 3,
+      "entryType": "PAYOUT",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "4.2",
+      "fromAccount": "escrow:60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324:reserved:c26c17a9-8876-421a-b295-a1a6525369d6",
+      "toAccount": "agent:workflow-verification-delivery-d",
+      "chainId": 31340,
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "transactionHash": null,
+      "metadata": {
+        "routeVersion": 1,
+        "settlementMessageId": null,
+        "sourceConfirmTxHash": null,
+        "payoutStatus": "PENDING",
+        "payoutAsset": "DTK",
+        "payoutAmount": "4.20000000",
+        "payoutTxHash": null
+      },
+      "createdAt": "2026-08-11T22:42:59.191055Z"
+    },
+    {
+      "id": "60d34255-7a68-4eec-bdc9-cf85d9a03dbd",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 4,
+      "entryType": "PLATFORM_FEE",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "0.5",
+      "fromAccount": "escrow:60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324:available",
+      "toAccount": "platform:fees",
+      "chainId": 31337,
+      "nodeId": null,
+      "attemptId": null,
+      "transactionHash": null,
+      "metadata": {},
+      "createdAt": "2026-08-11T22:42:59.195957Z"
+    },
+    {
+      "id": "66910c6b-61d3-4d86-a691-b77725371cdc",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "sequence": 5,
+      "entryType": "REFUND",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "3.3",
+      "fromAccount": "escrow:60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324:available",
+      "toAccount": "requester:d73f3341-19a1-4ab2-a8c4-0b3b48408734",
+      "chainId": 31337,
+      "nodeId": null,
+      "attemptId": null,
+      "transactionHash": null,
+      "metadata": {},
+      "createdAt": "2026-08-11T22:42:59.195957Z"
+    }
+  ],
+  "gasDeposits": [],
+  "feeLedger": [],
+  "coordinatorDecisions": [
+    {
+      "id": "4bc0037b-d6c7-4b56-914e-189badd666a4",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "nodeId": null,
+      "attemptId": null,
+      "coordinatorDid": "did:local:coordinator",
+      "decisionType": "WORKFLOW_CREATED",
+      "policyVersion": "RULE_PLANNER_V1",
+      "inputHash": "0x21a63303607653f2417af0fc8b0c85fc4c18ede33d514f15f0d820bfa0714337",
+      "decisionHash": "0x1bb28d455aa046a0ce93d86621d3dea64f0859e184dd22a78534e057901eabe9",
+      "payload": {
+        "input": {
+          "title": "academic_research 输出验证",
+          "objective": "使用 academic_research 能力执行 REAL-F1 场景的中文任务，并要求结果包含 summary、score、sources 三个字段。",
+          "budget": "8.00",
+          "platformFee": "0.50",
+          "currency": "USDC",
+          "sourceChainId": 31337,
+          "inputPayload": {
+            "experimentScenario": "REAL-F1",
+            "language": "zh-CN",
+            "Coordinator": {
+              "agentType": "COORDINATOR",
+              "agentKey": "workflow-coordinator-agent",
+              "did": "did:local:workflow-coordinator-agent",
+              "profileId": "03416af8-d1dd-4b66-bcf0-d28426ed5dfb"
+            }
+          },
+          "nodes": [
+            {
+              "nodeKey": "N1",
+              "title": "执行 academic_research 任务",
+              "description": "基于用户提供的 REAL-F1 实验场景，以中文完成 academic_research，并产出可用于判断任务完成质量的 summary、score、sources。",
+              "capability": "academic_research",
+              "dependsOn": [],
+              "acceptanceCriteria": {
+                "requiredFields": [
+                  "summary",
+                  "score",
+                  "sources"
+                ],
+                "rules": [
+                  "输出语言应为 zh-CN。",
+                  "summary 应简要说明 academic_research 在 REAL-F1 场景中的执行结果。",
+                  "score 应给出对结果完整性和可信度的评分。",
+                  "sources 应列出用于支撑 summary 的来源或说明无可用来源的原因。",
+                  "不得省略 summary、score、sources 任一字段。"
+                ]
+              },
+              "inputPayload": {
+                "experimentScenario": "REAL-F1",
+                "language": "zh-CN"
+              },
+              "reward": "4.20",
+              "riskLevel": "LOW",
+              "reviewPolicyVersion": "RISK_REVIEW_V2",
+              "requiredApprovals": 0,
+              "challengePeriodSeconds": 0,
+              "samplingRateBps": 0,
+              "reviewBudget": "0",
+              "maxAttempts": 3,
+              "riskAssessment": {
+                "score": 15,
+                "riskLevel": "LOW",
+                "reasons": [
+                  "checks 3 required result field(s)"
+                ],
+                "assignmentMode": "AUTO"
+              }
+            }
+          ]
+        },
+        "referenceCode": "WF-1023",
+        "fundingMode": "RESERVED"
+      },
+      "createdAt": "2026-08-11T22:31:08.031038Z",
+      "updatedAt": "2026-08-11T22:31:08.031038Z"
+    },
+    {
+      "id": "473d1868-f5e7-4c35-998e-74505ba96569",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "coordinatorDid": "did:local:coordinator",
+      "decisionType": "AGENT_DISPATCH",
+      "policyVersion": "MATCH_V1",
+      "inputHash": "0x96060ebc0f3a59303230050ea449bcd61f0221744dda4f2f939080c7c3e932d8",
+      "decisionHash": "0xd7de0545b2c8ad0861fe70c0d8bfbc2e289069da652397238955802ff0d04ba1",
+      "payload": {
+        "input": {
+          "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+          "capability": "academic_research"
+        },
+        "agentKey": "workflow-verification-delivery-d",
+        "homeChainId": 31340,
+        "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+        "routeVersion": 1,
+        "candidateRank": 1,
+        "matchScore": "92.062"
+      },
+      "createdAt": "2026-08-11T22:31:10.634267Z",
+      "updatedAt": "2026-08-11T22:31:10.634267Z"
+    },
+    {
+      "id": "7b1535a9-6164-4de4-812a-765bb5054064",
+      "workflowId": "60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324",
+      "nodeId": "8d048d74-104a-4d41-9886-8ad3cd867a53",
+      "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+      "coordinatorDid": "did:local:coordinator",
+      "decisionType": "RESULT_REVIEW",
+      "policyVersion": "RISK_REVIEW_V2",
+      "inputHash": "0xdaf306849fda2bf13501f30032d12dcc4dafc21f6849ae07424fdc0eb754ff5b",
+      "decisionHash": "0x18edd950b3ba0ac70558951bcedbb2ce84bea81f4c8931c2ec22b365969c9f32",
+      "payload": {
+        "input": {
+          "attemptId": "c26c17a9-8876-421a-b295-a1a6525369d6",
+          "criteriaHash": "0xbb98255c25a0f1b9671cc0e093cbd4ac413e3c76eaaa945349b7b35bf614d042",
+          "resultHash": "0xf0f7f6c3591c4163812e2332fa92867c085d7687382ab1dd23a89c72efca490e",
+          "proofHash": "0x14c8b43408ab99c8d2ff22b1a385676259ddd18d77beba0642aa27de63ee61e0",
+          "riskLevel": "LOW",
+          "reviewPolicyHash": "0x998400dce43409639a689a90d37dcf6b6d667e1a04c78173b09c36600c61f607",
+          "reviewSampled": false,
+          "randomnessMode": "NOT_REQUIRED",
+          "randomnessStatus": "NOT_REQUIRED",
+          "randomnessRequestId": null,
+          "randomnessCommitment": null,
+          "randomnessProofHash": null,
+          "requiredApprovals": 0,
+          "approvals": [],
+          "challenge": null,
+          "passed": true,
+          "reason": "Immutable acceptance criteria passed",
+          "source": "COORDINATOR_AUTOMATIC"
+        },
+        "passed": true,
+        "reason": "Immutable acceptance criteria passed",
+        "reviewHash": "0xdaf306849fda2bf13501f30032d12dcc4dafc21f6849ae07424fdc0eb754ff5b"
+      },
+      "createdAt": "2026-08-11T22:42:59.178531Z",
+      "updatedAt": "2026-08-11T22:42:59.178531Z"
+    }
+  ],
+  "protocolJobs": [],
+  "ledgerSummary": {
+    "assets": [
+      {
+        "assetKind": "TOKEN",
+        "assetSymbol": "USDC",
+        "debits": "20.200000000000",
+        "credits": "20.200000000000",
+        "balanced": true
+      }
+    ],
+    "balanced": true,
+    "entryCount": 5
+  }
+}

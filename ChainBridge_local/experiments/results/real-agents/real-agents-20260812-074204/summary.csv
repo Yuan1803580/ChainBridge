@@ -1,0 +1,4 @@
+﻿scenarioId,runs,passed,failed,passRate,averageRunnerDurationMs
+REAL-F1,1,1,0,1.0,33.0
+REAL-F2,1,1,0,1.0,22544.0
+REAL-F3,1,1,0,1.0,24.0

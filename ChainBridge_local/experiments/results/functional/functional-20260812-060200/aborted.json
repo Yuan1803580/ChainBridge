@@ -1,0 +1,7 @@
+﻿{
+    "status":  "ABORTED",
+    "reason":  "runner_output_pipe_handle_inheritance",
+    "completedRuns":  3,
+    "supersededBy":  "pending-rerun",
+    "recordedAt":  "2026-08-11T22:09:04.1282592Z"
+}

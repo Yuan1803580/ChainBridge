@@ -1,0 +1,24 @@
+{
+  "status": "ok",
+  "database": "connected",
+  "service": "agent-crosschain-platform-api",
+  "runtimeId": "8d1267d1-4a82-49bc-a87b-ff58cee9017f",
+  "timestamp": "2026-08-11T23:14:05.603569Z",
+  "workflowRecovery": {
+    "enabled": true,
+    "running": true,
+    "intervalSeconds": 5.0,
+    "lastScanAt": "2026-08-11T23:14:05.479955+00:00",
+    "nextScanAt": "2026-08-11T23:14:10.479955+00:00",
+    "scanCount": 257,
+    "recoveredWorkflowCount": 9,
+    "lastError": null,
+    "lastActions": {
+      "1b39297e-cebb-4bf8-b5a1-b156de2824f9": "idle",
+      "81d0b7c3-0ec6-4266-8340-828f29067400": "idle",
+      "09570c6f-abb9-40b0-8df5-1987d1a0b11e": "idle",
+      "802df513-c3eb-484d-9203-3bfd905ca7d4": "workflow_completed",
+      "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d": "workflow_completed"
+    }
+  }
+}

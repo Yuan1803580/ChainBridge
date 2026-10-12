@@ -1,0 +1,7 @@
+packages:
+  - apps/web
+  - packages/*
+  - services/chain-worker
+
+onlyBuiltDependencies:
+  - sharp

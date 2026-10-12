@@ -1,0 +1,9 @@
+{
+  "runId": "a125135c-6121-4dd6-a672-4c75a9ab9bb9",
+  "scenarioId": "REAL-F2",
+  "passed": false,
+  "startedAt": "2026-08-11T23:19:17.393313Z",
+  "finishedAt": "2026-08-11T23:19:17.416601Z",
+  "runnerDurationMs": 24,
+  "error": "RuntimeError: PATCH /api/v1/workflow-agents/0e21ec66-c7e2-468b-811c-20c979b60c8e failed (500): Internal Server Error"
+}

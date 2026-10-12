@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chainbridge.local/schemas/external-agent-v2-result.schema.json",
+  "title": "ChainBridge External Agent V2 Result",
+  "type": "object",
+  "required": [
+    "protocolVersion",
+    "agentId",
+    "capabilityId",
+    "completedAt",
+    "did",
+    "output",
+    "outputHash",
+    "requestId",
+    "signature"
+  ],
+  "properties": {
+    "protocolVersion": { "const": "2.0" },
+    "agentId": { "type": "string", "minLength": 2, "maxLength": 100 },
+    "capabilityId": { "type": "string", "minLength": 2, "maxLength": 100 },
+    "completedAt": { "type": "string", "format": "date-time" },
+    "did": { "type": "string", "minLength": 8, "maxLength": 255 },
+    "output": { "type": "object" },
+    "outputHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "requestId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "signature": {
+      "type": "object",
+      "required": ["algorithm", "publicKeyHex", "value"],
+      "properties": {
+        "algorithm": { "const": "ES256K" },
+        "verificationMethod": { "type": "string" },
+        "publicKeyHex": { "type": "string", "pattern": "^0x04[a-fA-F0-9]{128}$" },
+        "publicKeyMultibase": { "type": "string" },
+        "value": { "type": "string", "minLength": 32 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

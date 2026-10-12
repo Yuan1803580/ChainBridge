@@ -1,0 +1,1263 @@
+{
+  "id": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+  "referenceCode": "WF-1027",
+  "requesterId": "d73f3341-19a1-4ab2-a8c4-0b3b48408734",
+  "title": "REAL-F3 timeout and Agent replacement",
+  "objective": "Inject a timeout into the first real Agent attempt, then recover with a new Agent attempt.",
+  "status": "COMPLETED",
+  "currency": "USDC",
+  "budget": "8",
+  "platformFee": "0.5",
+  "paidAmount": "4.2",
+  "refundedAmount": "3.3",
+  "sourceChainId": 31337,
+  "termsHash": "0xeab7b3324f0c33fb3e3f2d3d8ab8ce663ae397b0eb16ee4aea3f69f56a378c41",
+  "inputPayload": {
+    "experimentScenario": "REAL-F3",
+    "language": "zh-CN"
+  },
+  "fundingMode": "RESERVED",
+  "fundingStatus": "MODEL_RESERVED",
+  "fundingWallet": null,
+  "onchainWorkflowId": "0xd7c48f4a7cc54e469a9900c1574ad66d00000000000000000000000000000000",
+  "approveTxHash": null,
+  "lockTxHash": null,
+  "sourceGasTxHash": null,
+  "deploymentId": null,
+  "sourceGasDeposit": "0",
+  "sourceGasRefunded": "0",
+  "lockConfirmedAt": null,
+  "failureRefundedAt": null,
+  "contractSyncStatus": "MODEL_ONLY",
+  "failureReason": null,
+  "completedAt": "2026-08-11T23:09:48.139781Z",
+  "createdAt": "2026-08-11T23:09:00.226327Z",
+  "updatedAt": "2026-08-11T23:09:48.139781Z",
+  "requester": {
+    "id": "d73f3341-19a1-4ab2-a8c4-0b3b48408734",
+    "did": "did:local:campus-requester",
+    "slug": "campus-requester",
+    "displayName": "校园需求 Agent",
+    "description": "发布校园创新项目的数据处理与内容服务需求。",
+    "roles": [
+      "requester"
+    ],
+    "status": "active",
+    "endpoint": "http://localhost:8000/api/v1/demo-agents/campus-requester",
+    "operationalPublicKey": "0x0461965d7ab1b4a0b1a2252cd9a3410f9364b4b5207b39472388de1421d5a724658dbaa3f0525084d5397557b3e709322fc883a595f7e0039a182d1083efd1fce1",
+    "organizationId": "org:campus-requester",
+    "reviewWallet": "0x8878369dDAea117eaC13908B8633f212174E3FE4",
+    "reviewerActive": false,
+    "reputationScore": "0",
+    "completedOrders": 0,
+    "erc8004Registration": null,
+    "createdAt": "2026-08-05T15:33:31.288980Z",
+    "updatedAt": "2026-08-05T15:33:31.288980Z"
+  },
+  "nodes": [
+    {
+      "id": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeKey": "N1",
+      "title": "Recoverable research task",
+      "description": "Summarize why stable nodeId and independent attemptId prevent duplicate settlement.",
+      "capability": "research",
+      "status": "SETTLED",
+      "dependsOn": [],
+      "acceptanceCriteria": {
+        "requiredFields": [
+          "summary",
+          "score",
+          "sources"
+        ],
+        "rules": [
+          "Return a concise result that directly answers the objective.",
+          "Do not invent sources or completed artifacts."
+        ]
+      },
+      "inputPayload": {
+        "language": "zh-CN",
+        "topic": "attempt recovery"
+      },
+      "outputPayload": {
+        "summary": "稳定的 nodeId 与独立的 attemptId 通过把“业务结算对象”和“执行尝试”分开建模来防止重复结算：nodeId 在恢复、重试或调度迁移后仍指向同一个应结算节点，因此结算端可以用它作为幂等归属键，只允许同一节点产生一次最终结算；attemptId 每次尝试独立变化，用来区分旧尝试、失败尝试和恢复后的新尝试，避免把重复执行误认为新的业务节点。两者组合后，系统既能识别“这是同一 node 的重试”，又能审计“是哪一次 attempt 产生的结果”，从而在可恢复任务中阻断重复 settlement。",
+        "score": 86,
+        "facts": [
+          "检索到的事务提交研究指出，Transaction Certification Service 用于刻画带并发控制的多次事务提交协议的安全保证。",
+          "检索到的事务复制研究指出，Hybrid Transactional Replication 允许事务按需丢弃或重试，并证明其仍满足类似常见事务复制方案的强一致性保证。"
+        ],
+        "analysis": [
+          "把 nodeId 设计为稳定标识，可以让恢复流程在同一逻辑节点上续接，而不是生成另一个可结算主体。",
+          "把 attemptId 设计为独立标识，可以让每次执行尝试都有可追踪边界，旧 attempt 的迟到结果可被识别并拒绝或忽略。",
+          "settlement 去重应以稳定 nodeId 或基于 nodeId 的结算键为准，而 attemptId 主要用于尝试级隔离、审计和冲突判定；若只使用 attemptId，重试会产生多个不同键，反而增加重复结算风险。"
+        ],
+        "limitations": [
+          "本次没有依赖结果可优先使用；受控检索工具返回的是相关分布式事务/重试一致性论文摘要，不是针对该实验场景 REAL-F3 的专用规范。",
+          "结论假定 settlement 层实际执行了基于稳定 nodeId 的唯一约束、幂等写入或等价去重检查；仅有标识设计而无落库约束或原子检查，不能单独保证不重复结算。"
+        ],
+        "sources": [
+          "http://arxiv.org/abs/2306.15031v2",
+          "https://arxiv.org/pdf/2306.15031v2",
+          "http://arxiv.org/abs/2305.15436v3",
+          "https://arxiv.org/pdf/2305.15436v3",
+          "http://arxiv.org/abs/2004.02241v1",
+          "https://arxiv.org/pdf/2004.02241v1",
+          "http://arxiv.org/abs/2107.06100v1",
+          "https://arxiv.org/pdf/2107.06100v1",
+          "http://arxiv.org/abs/2103.08436v1",
+          "https://arxiv.org/pdf/2103.08436v1",
+          "http://arxiv.org/abs/1012.1288v5",
+          "https://arxiv.org/pdf/1012.1288v5",
+          "http://arxiv.org/abs/1006.3394v1",
+          "https://arxiv.org/pdf/1006.3394v1",
+          "http://arxiv.org/abs/1001.0196v1",
+          "https://arxiv.org/pdf/1001.0196v1",
+          "http://arxiv.org/abs/2106.14402v1",
+          "https://arxiv.org/pdf/2106.14402v1",
+          "http://arxiv.org/abs/2108.08395v1",
+          "https://arxiv.org/pdf/2108.08395v1"
+        ]
+      },
+      "reward": "4.2",
+      "riskLevel": "LOW",
+      "riskAssignmentMode": "MANUAL",
+      "riskScore": 15,
+      "riskReasons": [
+        "checks 3 required result field(s)"
+      ],
+      "reviewPolicyVersion": "RISK_REVIEW_V2",
+      "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad",
+      "requiredApprovals": 0,
+      "challengePeriodSeconds": 0,
+      "samplingRateBps": 0,
+      "reviewBudget": "0",
+      "maxAttempts": 3,
+      "currentAttemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "settledAt": "2026-08-11T23:09:47.669038Z",
+      "createdAt": "2026-08-11T23:09:00.229330Z",
+      "updatedAt": "2026-08-11T23:09:47.673212Z",
+      "criteriaHash": "0xadce38e4d68635d6f5ccba2463213e7997f4b85195d32ee2469dfd53e2605c03",
+      "attempts": [
+        {
+          "id": "58e82dbd-1924-4cec-81d3-f9002c851614",
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "attemptNumber": 1,
+          "status": "FAILED",
+          "agentProfileId": "42b60d1d-a446-43f0-8343-3fba99a1525a",
+          "agentKey": "workflow-multimodal-research-codex-c",
+          "agentId": "938b5dd2-8753-4f7d-a5ed-a1db0e309c3e",
+          "chainId": 31339,
+          "homeWallet": "0x64222D83C6e13735733Ae10B2ffa0BC5F5498eF1",
+          "routeId": "970804d3-015d-4396-89a5-3df2b48d5a21",
+          "routeVersion": 1,
+          "settlementAsset": "USDC",
+          "payoutAsset": "CTK",
+          "payoutTokenAddress": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "payoutDecimals": 8,
+          "payoutRate": "3",
+          "payoutSlippageBps": 100,
+          "payoutQuoteAmount": null,
+          "payoutMinAmount": null,
+          "payoutQuoteExpiresAt": null,
+          "payoutStatus": "PENDING",
+          "payoutTxHash": null,
+          "matchCandidateId": "dd1ddbb8-9f66-49f2-a3de-4e43521f42c8",
+          "dispatchMessageId": "0x41f0945800b73d89e32bd12b60f7f47c4244f6e23d4f503e64aa2632255f6930",
+          "resultMessageId": null,
+          "resultPayload": null,
+          "resultHash": null,
+          "proofHash": null,
+          "reviewReason": null,
+          "failureReasonCode": "AGENT_TIMEOUT",
+          "failureResponsibleParty": "AGENT",
+          "resultProofStatus": "NOT_REQUIRED",
+          "resultProofTxHash": null,
+          "coordinatorReviewHash": null,
+          "reviewStatus": "NOT_STARTED",
+          "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad",
+          "reviewSampled": false,
+          "randomnessMode": "NOT_REQUIRED",
+          "randomnessStatus": "NOT_REQUIRED",
+          "randomnessRequestId": null,
+          "randomnessCommitment": null,
+          "randomWord": null,
+          "randomnessProofHash": null,
+          "randomnessRequestedAt": null,
+          "randomnessFulfilledAt": null,
+          "reviewStartedAt": null,
+          "challengeExpiresAt": null,
+          "settlementStatus": "NONE",
+          "settlementMessageId": null,
+          "destinationTxHash": null,
+          "sourceConfirmTxHash": null,
+          "submittedAt": null,
+          "reviewedAt": null,
+          "settledAt": null,
+          "createdAt": "2026-08-11T23:09:02.350559Z",
+          "updatedAt": "2026-08-11T23:09:02.545151Z",
+          "reviewApprovals": [],
+          "reviewChallenges": [],
+          "arbitrationVotes": [],
+          "settlementRecovery": null
+        },
+        {
+          "id": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "attemptNumber": 2,
+          "status": "SETTLED",
+          "agentProfileId": "43aa8494-8610-44ba-a3ca-b6303086c0fc",
+          "agentKey": "workflow-verification-delivery-d",
+          "agentId": "d86468cb-4a8c-470c-999a-aaf24a0d69b2",
+          "chainId": 31340,
+          "homeWallet": "0x002E1e197fAe58566F36a8071c798349062434E0",
+          "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+          "routeVersion": 1,
+          "settlementAsset": "USDC",
+          "payoutAsset": "DTK",
+          "payoutTokenAddress": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "payoutDecimals": 6,
+          "payoutRate": "4",
+          "payoutSlippageBps": 100,
+          "payoutQuoteAmount": null,
+          "payoutMinAmount": null,
+          "payoutQuoteExpiresAt": null,
+          "payoutStatus": "PENDING",
+          "payoutTxHash": null,
+          "matchCandidateId": "394ca344-2a11-436a-8b00-deba20806282",
+          "dispatchMessageId": "0xbd202058fb80f5b576a98ee161e9073b086050e47640892cabcc147ab7fe8365",
+          "resultMessageId": "0xa386ddb8cc4f655cdb50975803affa5fa78fc79a3d28e52b5644c12a75df2978",
+          "resultPayload": {
+            "summary": "稳定的 nodeId 与独立的 attemptId 通过把“业务结算对象”和“执行尝试”分开建模来防止重复结算：nodeId 在恢复、重试或调度迁移后仍指向同一个应结算节点，因此结算端可以用它作为幂等归属键，只允许同一节点产生一次最终结算；attemptId 每次尝试独立变化，用来区分旧尝试、失败尝试和恢复后的新尝试，避免把重复执行误认为新的业务节点。两者组合后，系统既能识别“这是同一 node 的重试”，又能审计“是哪一次 attempt 产生的结果”，从而在可恢复任务中阻断重复 settlement。",
+            "score": 86,
+            "facts": [
+              "检索到的事务提交研究指出，Transaction Certification Service 用于刻画带并发控制的多次事务提交协议的安全保证。",
+              "检索到的事务复制研究指出，Hybrid Transactional Replication 允许事务按需丢弃或重试，并证明其仍满足类似常见事务复制方案的强一致性保证。"
+            ],
+            "analysis": [
+              "把 nodeId 设计为稳定标识，可以让恢复流程在同一逻辑节点上续接，而不是生成另一个可结算主体。",
+              "把 attemptId 设计为独立标识，可以让每次执行尝试都有可追踪边界，旧 attempt 的迟到结果可被识别并拒绝或忽略。",
+              "settlement 去重应以稳定 nodeId 或基于 nodeId 的结算键为准，而 attemptId 主要用于尝试级隔离、审计和冲突判定；若只使用 attemptId，重试会产生多个不同键，反而增加重复结算风险。"
+            ],
+            "limitations": [
+              "本次没有依赖结果可优先使用；受控检索工具返回的是相关分布式事务/重试一致性论文摘要，不是针对该实验场景 REAL-F3 的专用规范。",
+              "结论假定 settlement 层实际执行了基于稳定 nodeId 的唯一约束、幂等写入或等价去重检查；仅有标识设计而无落库约束或原子检查，不能单独保证不重复结算。"
+            ],
+            "sources": [
+              "http://arxiv.org/abs/2306.15031v2",
+              "https://arxiv.org/pdf/2306.15031v2",
+              "http://arxiv.org/abs/2305.15436v3",
+              "https://arxiv.org/pdf/2305.15436v3",
+              "http://arxiv.org/abs/2004.02241v1",
+              "https://arxiv.org/pdf/2004.02241v1",
+              "http://arxiv.org/abs/2107.06100v1",
+              "https://arxiv.org/pdf/2107.06100v1",
+              "http://arxiv.org/abs/2103.08436v1",
+              "https://arxiv.org/pdf/2103.08436v1",
+              "http://arxiv.org/abs/1012.1288v5",
+              "https://arxiv.org/pdf/1012.1288v5",
+              "http://arxiv.org/abs/1006.3394v1",
+              "https://arxiv.org/pdf/1006.3394v1",
+              "http://arxiv.org/abs/1001.0196v1",
+              "https://arxiv.org/pdf/1001.0196v1",
+              "http://arxiv.org/abs/2106.14402v1",
+              "https://arxiv.org/pdf/2106.14402v1",
+              "http://arxiv.org/abs/2108.08395v1",
+              "https://arxiv.org/pdf/2108.08395v1"
+            ]
+          },
+          "resultHash": "0xaf417770ae5c8c4c8b84bdc1431a3a1da007712f881aa3a9576be061be095d5b",
+          "proofHash": "0x07a4644bfe0f8a760f577c0cbf5b7b20db98c9a7de05477620357e5743d9d7c6",
+          "reviewReason": "Immutable acceptance criteria passed",
+          "failureReasonCode": null,
+          "failureResponsibleParty": null,
+          "resultProofStatus": "DELIVERED",
+          "resultProofTxHash": null,
+          "coordinatorReviewHash": "0xf9a0eaa68d07d72a72fb4501f2bf7d5615b6ba04d6de392546715c3f6161bbc9",
+          "reviewStatus": "PASSED",
+          "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad",
+          "reviewSampled": false,
+          "randomnessMode": "NOT_REQUIRED",
+          "randomnessStatus": "NOT_REQUIRED",
+          "randomnessRequestId": null,
+          "randomnessCommitment": null,
+          "randomWord": null,
+          "randomnessProofHash": null,
+          "randomnessRequestedAt": null,
+          "randomnessFulfilledAt": null,
+          "reviewStartedAt": "2026-08-11T23:09:47.513749Z",
+          "challengeExpiresAt": null,
+          "settlementStatus": "LOCAL_PAID",
+          "settlementMessageId": null,
+          "destinationTxHash": null,
+          "sourceConfirmTxHash": null,
+          "submittedAt": "2026-08-11T23:09:47.331533Z",
+          "reviewedAt": "2026-08-11T23:09:47.514752Z",
+          "settledAt": "2026-08-11T23:09:47.669038Z",
+          "createdAt": "2026-08-11T23:09:02.592949Z",
+          "updatedAt": "2026-08-11T23:09:47.673212Z",
+          "reviewApprovals": [],
+          "reviewChallenges": [],
+          "arbitrationVotes": [],
+          "settlementRecovery": null
+        }
+      ],
+      "currentAttempt": {
+        "id": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+        "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+        "attemptNumber": 2,
+        "status": "SETTLED",
+        "agentProfileId": "43aa8494-8610-44ba-a3ca-b6303086c0fc",
+        "agentKey": "workflow-verification-delivery-d",
+        "agentId": "d86468cb-4a8c-470c-999a-aaf24a0d69b2",
+        "chainId": 31340,
+        "homeWallet": "0x002E1e197fAe58566F36a8071c798349062434E0",
+        "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+        "routeVersion": 1,
+        "settlementAsset": "USDC",
+        "payoutAsset": "DTK",
+        "payoutTokenAddress": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+        "payoutDecimals": 6,
+        "payoutRate": "4",
+        "payoutSlippageBps": 100,
+        "payoutQuoteAmount": null,
+        "payoutMinAmount": null,
+        "payoutQuoteExpiresAt": null,
+        "payoutStatus": "PENDING",
+        "payoutTxHash": null,
+        "matchCandidateId": "394ca344-2a11-436a-8b00-deba20806282",
+        "dispatchMessageId": "0xbd202058fb80f5b576a98ee161e9073b086050e47640892cabcc147ab7fe8365",
+        "resultMessageId": "0xa386ddb8cc4f655cdb50975803affa5fa78fc79a3d28e52b5644c12a75df2978",
+        "resultPayload": {
+          "summary": "稳定的 nodeId 与独立的 attemptId 通过把“业务结算对象”和“执行尝试”分开建模来防止重复结算：nodeId 在恢复、重试或调度迁移后仍指向同一个应结算节点，因此结算端可以用它作为幂等归属键，只允许同一节点产生一次最终结算；attemptId 每次尝试独立变化，用来区分旧尝试、失败尝试和恢复后的新尝试，避免把重复执行误认为新的业务节点。两者组合后，系统既能识别“这是同一 node 的重试”，又能审计“是哪一次 attempt 产生的结果”，从而在可恢复任务中阻断重复 settlement。",
+          "score": 86,
+          "facts": [
+            "检索到的事务提交研究指出，Transaction Certification Service 用于刻画带并发控制的多次事务提交协议的安全保证。",
+            "检索到的事务复制研究指出，Hybrid Transactional Replication 允许事务按需丢弃或重试，并证明其仍满足类似常见事务复制方案的强一致性保证。"
+          ],
+          "analysis": [
+            "把 nodeId 设计为稳定标识，可以让恢复流程在同一逻辑节点上续接，而不是生成另一个可结算主体。",
+            "把 attemptId 设计为独立标识，可以让每次执行尝试都有可追踪边界，旧 attempt 的迟到结果可被识别并拒绝或忽略。",
+            "settlement 去重应以稳定 nodeId 或基于 nodeId 的结算键为准，而 attemptId 主要用于尝试级隔离、审计和冲突判定；若只使用 attemptId，重试会产生多个不同键，反而增加重复结算风险。"
+          ],
+          "limitations": [
+            "本次没有依赖结果可优先使用；受控检索工具返回的是相关分布式事务/重试一致性论文摘要，不是针对该实验场景 REAL-F3 的专用规范。",
+            "结论假定 settlement 层实际执行了基于稳定 nodeId 的唯一约束、幂等写入或等价去重检查；仅有标识设计而无落库约束或原子检查，不能单独保证不重复结算。"
+          ],
+          "sources": [
+            "http://arxiv.org/abs/2306.15031v2",
+            "https://arxiv.org/pdf/2306.15031v2",
+            "http://arxiv.org/abs/2305.15436v3",
+            "https://arxiv.org/pdf/2305.15436v3",
+            "http://arxiv.org/abs/2004.02241v1",
+            "https://arxiv.org/pdf/2004.02241v1",
+            "http://arxiv.org/abs/2107.06100v1",
+            "https://arxiv.org/pdf/2107.06100v1",
+            "http://arxiv.org/abs/2103.08436v1",
+            "https://arxiv.org/pdf/2103.08436v1",
+            "http://arxiv.org/abs/1012.1288v5",
+            "https://arxiv.org/pdf/1012.1288v5",
+            "http://arxiv.org/abs/1006.3394v1",
+            "https://arxiv.org/pdf/1006.3394v1",
+            "http://arxiv.org/abs/1001.0196v1",
+            "https://arxiv.org/pdf/1001.0196v1",
+            "http://arxiv.org/abs/2106.14402v1",
+            "https://arxiv.org/pdf/2106.14402v1",
+            "http://arxiv.org/abs/2108.08395v1",
+            "https://arxiv.org/pdf/2108.08395v1"
+          ]
+        },
+        "resultHash": "0xaf417770ae5c8c4c8b84bdc1431a3a1da007712f881aa3a9576be061be095d5b",
+        "proofHash": "0x07a4644bfe0f8a760f577c0cbf5b7b20db98c9a7de05477620357e5743d9d7c6",
+        "reviewReason": "Immutable acceptance criteria passed",
+        "failureReasonCode": null,
+        "failureResponsibleParty": null,
+        "resultProofStatus": "DELIVERED",
+        "resultProofTxHash": null,
+        "coordinatorReviewHash": "0xf9a0eaa68d07d72a72fb4501f2bf7d5615b6ba04d6de392546715c3f6161bbc9",
+        "reviewStatus": "PASSED",
+        "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad",
+        "reviewSampled": false,
+        "randomnessMode": "NOT_REQUIRED",
+        "randomnessStatus": "NOT_REQUIRED",
+        "randomnessRequestId": null,
+        "randomnessCommitment": null,
+        "randomWord": null,
+        "randomnessProofHash": null,
+        "randomnessRequestedAt": null,
+        "randomnessFulfilledAt": null,
+        "reviewStartedAt": "2026-08-11T23:09:47.513749Z",
+        "challengeExpiresAt": null,
+        "settlementStatus": "LOCAL_PAID",
+        "settlementMessageId": null,
+        "destinationTxHash": null,
+        "sourceConfirmTxHash": null,
+        "submittedAt": "2026-08-11T23:09:47.331533Z",
+        "reviewedAt": "2026-08-11T23:09:47.514752Z",
+        "settledAt": "2026-08-11T23:09:47.669038Z",
+        "createdAt": "2026-08-11T23:09:02.592949Z",
+        "updatedAt": "2026-08-11T23:09:47.673212Z",
+        "reviewApprovals": [],
+        "reviewChallenges": [],
+        "arbitrationVotes": [],
+        "settlementRecovery": null
+      },
+      "reservations": [
+        {
+          "id": "a1619446-b3fd-4469-87b8-84744884f16b",
+          "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+          "amount": "4.2",
+          "currency": "USDC",
+          "status": "RELEASED",
+          "releasedAt": "2026-08-11T23:09:02.540898Z",
+          "paidAt": null,
+          "createdAt": "2026-08-11T23:09:02.351875Z",
+          "updatedAt": "2026-08-11T23:09:02.543070Z"
+        },
+        {
+          "id": "9398057e-bca7-46c3-b875-ef3398026c77",
+          "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+          "amount": "4.2",
+          "currency": "USDC",
+          "status": "PAID",
+          "releasedAt": null,
+          "paidAt": "2026-08-11T23:09:47.669038Z",
+          "createdAt": "2026-08-11T23:09:02.595208Z",
+          "updatedAt": "2026-08-11T23:09:47.671413Z"
+        }
+      ],
+      "matchRounds": [
+        {
+          "id": "eb60cd53-b056-4cc9-a48d-9bfed799d737",
+          "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "roundNumber": 1,
+          "policyVersion": "MATCH_V1",
+          "capability": "research",
+          "candidateLimit": 3,
+          "status": "COMPLETED",
+          "createdAt": "2026-08-11T23:09:02.342948Z",
+          "updatedAt": "2026-08-11T23:09:47.671413Z",
+          "candidates": [
+            {
+              "id": "dd1ddbb8-9f66-49f2-a3de-4e43521f42c8",
+              "matchRoundId": "eb60cd53-b056-4cc9-a48d-9bfed799d737",
+              "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+              "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+              "agentProfileId": "42b60d1d-a446-43f0-8343-3fba99a1525a",
+              "agentKey": "workflow-multimodal-research-codex-c",
+              "rank": 1,
+              "score": "100",
+              "scoreBreakdown": {
+                "capability": "30",
+                "trust": "20.000",
+                "success": "20.000",
+                "latency": "10.000",
+                "priceFit": "10.000",
+                "routeHealth": "5",
+                "readiness": "5"
+              },
+              "quoteAmount": "4.2",
+              "currency": "USDC",
+              "chainId": 31339,
+              "homeWallet": "0x64222D83C6e13735733Ae10B2ffa0BC5F5498eF1",
+              "routeId": "970804d3-015d-4396-89a5-3df2b48d5a21",
+              "routeVersion": 1,
+              "status": "SELECTED",
+              "selectedAt": "2026-08-11T23:09:02.349565Z",
+              "exclusionReason": null,
+              "createdAt": "2026-08-11T23:09:02.345559Z",
+              "updatedAt": "2026-08-11T23:09:02.349565Z",
+              "agent": {
+                "id": "938b5dd2-8753-4f7d-a5ed-a1db0e309c3e",
+                "did": "did:local:workflow-multimodal-research-codex-c",
+                "slug": "workflow-multimodal-research-codex-c",
+                "displayName": "Independent Multitool Research Agent C",
+                "description": "External LLM Agent operated by 37.",
+                "roles": [
+                  "provider"
+                ],
+                "status": "active",
+                "endpoint": "http://127.0.0.1:8123/agents/workflow-multimodal-research-codex-c/invoke",
+                "operationalPublicKey": "0x049594bdc57a60849bba1afaf6789d2e835079bb7d845e1964443831f4684da456e53a6f101b34ec80487be1635abf9b1442276028094067f765f9d4484165431e",
+                "organizationId": null,
+                "reviewWallet": null,
+                "reviewerActive": false,
+                "reputationScore": "0",
+                "completedOrders": 0,
+                "erc8004Registration": {
+                  "type": "external-llm-agent",
+                  "ownerContactHash": "0x2f5835df45db7c34bfe30cfa3ebe069059335df82ee6966791835c4282791b6e",
+                  "organization": "无",
+                  "llm": {
+                    "provider": "openai_compatible",
+                    "model": "gpt-5.5",
+                    "systemPromptHash": "0x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                  },
+                  "serviceEndpoint": "http://127.0.0.1:8123/agents/workflow-multimodal-research-codex-c/invoke",
+                  "admissionStatus": "PENDING_OWNERSHIP"
+                },
+                "createdAt": "2026-08-07T14:19:30.844776Z",
+                "updatedAt": "2026-08-07T14:41:37.959110Z"
+              },
+              "routeKey": "A_TO_C"
+            },
+            {
+              "id": "394ca344-2a11-436a-8b00-deba20806282",
+              "matchRoundId": "eb60cd53-b056-4cc9-a48d-9bfed799d737",
+              "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+              "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+              "agentProfileId": "43aa8494-8610-44ba-a3ca-b6303086c0fc",
+              "agentKey": "workflow-verification-delivery-d",
+              "rank": 2,
+              "score": "54",
+              "scoreBreakdown": {
+                "capability": "30",
+                "trust": "0.000",
+                "success": "0.000",
+                "latency": "9.000",
+                "priceFit": "5.000",
+                "routeHealth": "5",
+                "readiness": "5"
+              },
+              "quoteAmount": "4.2",
+              "currency": "USDC",
+              "chainId": 31340,
+              "homeWallet": "0x002E1e197fAe58566F36a8071c798349062434E0",
+              "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+              "routeVersion": 1,
+              "status": "SETTLED",
+              "selectedAt": "2026-08-11T23:09:02.590987Z",
+              "exclusionReason": null,
+              "createdAt": "2026-08-11T23:09:02.345559Z",
+              "updatedAt": "2026-08-11T23:09:47.671059Z",
+              "agent": {
+                "id": "d86468cb-4a8c-470c-999a-aaf24a0d69b2",
+                "did": "did:local:workflow-verification-delivery-d",
+                "slug": "workflow-verification-delivery-d",
+                "displayName": "Multimodal Verification and Delivery Agent D",
+                "description": "External LLM Agent operated by sofaia.",
+                "roles": [
+                  "provider"
+                ],
+                "status": "active",
+                "endpoint": "http://127.0.0.1:8124/agents/workflow-verification-delivery-d/invoke",
+                "operationalPublicKey": "0x04f9f91b045a15099051a02cff62243a9d4dfaccde7ef710afd66b76934a946a4ab1376b59e98453c6fd1155b307deffec55012b4aeaaddcb18bfa7c34a2102003",
+                "organizationId": null,
+                "reviewWallet": null,
+                "reviewerActive": false,
+                "reputationScore": "0",
+                "completedOrders": 0,
+                "erc8004Registration": {
+                  "type": "external-llm-agent",
+                  "ownerContactHash": "0x2f5835df45db7c34bfe30cfa3ebe069059335df82ee6966791835c4282791b6e",
+                  "organization": "无",
+                  "llm": {
+                    "provider": "openai_compatible",
+                    "model": "gpt-5.5",
+                    "systemPromptHash": "0x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                  },
+                  "serviceEndpoint": "http://127.0.0.1:8124/agents/workflow-verification-delivery-d/invoke",
+                  "admissionStatus": "PENDING_OWNERSHIP"
+                },
+                "createdAt": "2026-08-09T12:57:46.672349Z",
+                "updatedAt": "2026-08-09T13:26:58.361300Z"
+              },
+              "routeKey": "A_TO_D"
+            }
+          ]
+        }
+      ],
+      "failureIncidents": [
+        {
+          "id": "1d006244-d036-445a-a070-71dd431e9988",
+          "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+          "reasonCode": "AGENT_TIMEOUT",
+          "responsibleParty": "AGENT",
+          "retryable": true,
+          "agentFault": true,
+          "gasTreatment": "AGENT_ATTEMPT_DEPOSIT",
+          "routePaused": false,
+          "evidence": {
+            "evidenceHash": null,
+            "detail": "Controlled REAL-F3 fault injection before Agent invocation.",
+            "reporterDid": "did:local:platform-admin"
+          },
+          "resolvedAt": null,
+          "createdAt": "2026-08-11T23:09:02.538924Z",
+          "updatedAt": "2026-08-11T23:09:02.538924Z"
+        }
+      ],
+      "waitingDiagnostics": {
+        "capability": "research",
+        "waitingReason": "RECOVERY_PENDING",
+        "registeredAgentCount": 8,
+        "matchableAgentCount": 1,
+        "matchableAgents": [
+          {
+            "agentKey": "workflow-multimodal-research-codex-c",
+            "chainId": 31339,
+            "routeVersion": 1
+          }
+        ],
+        "exclusionReasons": {
+          "SEEDED_LOCAL_AGENT_DISABLED": 3,
+          "AGENT_ROLE_NOT_EXECUTOR": 1,
+          "OUTPUT_SCHEMA_MISMATCH": 2,
+          "AGENT_ALREADY_ATTEMPTED_NODE": 1
+        },
+        "attemptsUsed": 2,
+        "maxAttempts": 3,
+        "remainingAttempts": 1,
+        "autoRecoveryEligible": false
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "63b79e91-d5ef-4cd8-9976-c2daa8e8c7a9",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 1,
+      "eventType": "WORKFLOW_CREATED",
+      "nodeId": null,
+      "attemptId": null,
+      "actor": "did:local:campus-requester",
+      "payload": {
+        "referenceCode": "WF-1027",
+        "nodeCount": 1,
+        "budget": "8.00"
+      },
+      "createdAt": "2026-08-11T23:09:00.230330Z"
+    },
+    {
+      "id": "e20e3b73-4e06-4272-ae97-85e3e90fa1fc",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 2,
+      "eventType": "FUNDING_MODEL_RESERVED",
+      "nodeId": null,
+      "attemptId": null,
+      "actor": "Coordinator",
+      "payload": {
+        "amount": "8.00",
+        "chainId": 31337,
+        "notOnchainFunds": true
+      },
+      "createdAt": "2026-08-11T23:09:00.231331Z"
+    },
+    {
+      "id": "d43e7355-4e2f-4e9a-a7f3-6e4e6c040a1b",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 3,
+      "eventType": "AGENT_CANDIDATES_RANKED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": null,
+      "actor": "Coordinator",
+      "payload": {
+        "matchingRound": 1,
+        "policyVersion": "MATCH_V1",
+        "capability": "research",
+        "candidates": [
+          {
+            "rank": 1,
+            "agentKey": "workflow-multimodal-research-codex-c",
+            "score": "100.000",
+            "chainId": 31339
+          },
+          {
+            "rank": 2,
+            "agentKey": "workflow-verification-delivery-d",
+            "score": "54.000",
+            "chainId": 31340
+          }
+        ]
+      },
+      "createdAt": "2026-08-11T23:09:02.348559Z"
+    },
+    {
+      "id": "bc484dfb-7f05-4cd7-9933-2160702fe300",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 4,
+      "eventType": "NODE_DISPATCHED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+      "actor": "Coordinator",
+      "payload": {
+        "agentKey": "workflow-multimodal-research-codex-c",
+        "chainId": 31339,
+        "routeId": "970804d3-015d-4396-89a5-3df2b48d5a21",
+        "routeVersion": 1,
+        "messageId": "0x41f0945800b73d89e32bd12b60f7f47c4244f6e23d4f503e64aa2632255f6930",
+        "matchingRoundId": "eb60cd53-b056-4cc9-a48d-9bfed799d737",
+        "candidateRank": 1,
+        "matchScore": "100.000"
+      },
+      "createdAt": "2026-08-11T23:09:02.353893Z"
+    },
+    {
+      "id": "e3a4758d-4473-4857-ad91-7260afd8dad7",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 5,
+      "eventType": "FAILURE_CLASSIFIED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+      "actor": "FailureClassifier",
+      "payload": {
+        "incidentId": "1d006244-d036-445a-a070-71dd431e9988",
+        "reasonCode": "AGENT_TIMEOUT",
+        "party": "AGENT",
+        "retryable": true,
+        "agentFault": true,
+        "routePaused": false,
+        "gasTreatment": "AGENT_ATTEMPT_DEPOSIT"
+      },
+      "createdAt": "2026-08-11T23:09:02.545151Z"
+    },
+    {
+      "id": "b8aaa55a-0792-4f64-ada0-247ffe7d10be",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 6,
+      "eventType": "AGENT_REPUTATION_UPDATED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+      "actor": "ReputationEngine",
+      "payload": {
+        "agentKey": "workflow-multimodal-research-codex-c",
+        "policyVersion": "AGENT_REPUTATION_V1",
+        "baselineTrustScore": 75,
+        "sampleCount": 12,
+        "successfulAttempts": 9,
+        "failedAttempts": 3,
+        "excludedAttempts": 5,
+        "historicalAttemptsExcluded": 0,
+        "failureReasonCounts": [
+          {
+            "reasonCode": "AGENT_EXECUTION_ERROR",
+            "count": 1
+          },
+          {
+            "reasonCode": "AGENT_TIMEOUT",
+            "count": 2
+          }
+        ],
+        "successRateBps": 7500,
+        "trustScore": 84,
+        "updatedAt": "2026-08-11T23:09:02.552885Z"
+      },
+      "createdAt": "2026-08-11T23:09:02.555008Z"
+    },
+    {
+      "id": "150ab08a-5d7d-4117-a1ce-7c2e37074a87",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 7,
+      "eventType": "NODE_DISPATCHED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "actor": "Coordinator",
+      "payload": {
+        "agentKey": "workflow-verification-delivery-d",
+        "chainId": 31340,
+        "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+        "routeVersion": 1,
+        "messageId": "0xbd202058fb80f5b576a98ee161e9073b086050e47640892cabcc147ab7fe8365",
+        "matchingRoundId": "eb60cd53-b056-4cc9-a48d-9bfed799d737",
+        "candidateRank": 2,
+        "matchScore": "54.000"
+      },
+      "createdAt": "2026-08-11T23:09:02.599787Z"
+    },
+    {
+      "id": "8ee442ac-d071-4bc9-b113-3a4934f6a8f7",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 8,
+      "eventType": "RESULT_SUBMITTED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "actor": "workflow-verification-delivery-d",
+      "payload": {
+        "resultHash": "0xaf417770ae5c8c4c8b84bdc1431a3a1da007712f881aa3a9576be061be095d5b",
+        "proofHash": "0x07a4644bfe0f8a760f577c0cbf5b7b20db98c9a7de05477620357e5743d9d7c6",
+        "messageId": "0xa386ddb8cc4f655cdb50975803affa5fa78fc79a3d28e52b5644c12a75df2978"
+      },
+      "createdAt": "2026-08-11T23:09:47.334906Z"
+    },
+    {
+      "id": "5811572f-74b7-4613-a0cf-2badca0e3649",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 9,
+      "eventType": "REVIEW_PASSED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "actor": "Coordinator",
+      "payload": {
+        "reason": "Immutable acceptance criteria passed",
+        "riskLevel": "LOW",
+        "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad"
+      },
+      "createdAt": "2026-08-11T23:09:47.518034Z"
+    },
+    {
+      "id": "5e9f2dde-5091-4e6f-87da-155d7edd2ce9",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 10,
+      "eventType": "NODE_SETTLED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "actor": "Coordinator",
+      "payload": {
+        "amount": "4.20000000",
+        "settlementAsset": "USDC",
+        "payoutAmount": "4.20000000",
+        "payoutAsset": "DTK",
+        "payoutStatus": "PENDING",
+        "agentKey": "workflow-verification-delivery-d",
+        "chainId": 31340
+      },
+      "createdAt": "2026-08-11T23:09:47.674251Z"
+    },
+    {
+      "id": "35628879-95e7-464f-9df6-1aa04f4e2504",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 11,
+      "eventType": "AGENT_REPUTATION_UPDATED",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "actor": "ReputationEngine",
+      "payload": {
+        "agentKey": "workflow-verification-delivery-d",
+        "policyVersion": "AGENT_REPUTATION_V1",
+        "baselineTrustScore": 75,
+        "sampleCount": 13,
+        "successfulAttempts": 12,
+        "failedAttempts": 1,
+        "excludedAttempts": 7,
+        "historicalAttemptsExcluded": 0,
+        "failureReasonCounts": [
+          {
+            "reasonCode": "AGENT_INVALID_SIGNATURE",
+            "count": 1
+          }
+        ],
+        "successRateBps": 8824,
+        "trustScore": 92,
+        "updatedAt": "2026-08-11T23:09:47.677438Z"
+      },
+      "createdAt": "2026-08-11T23:09:47.678507Z"
+    },
+    {
+      "id": "e6afa113-9766-4b18-98ef-7fb5b3534bbe",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 12,
+      "eventType": "WORKFLOW_COMPLETED",
+      "nodeId": null,
+      "attemptId": null,
+      "actor": "Coordinator",
+      "payload": {
+        "paid": "4.20000000",
+        "platformFee": "0.50000000",
+        "refunded": "3.30000000"
+      },
+      "createdAt": "2026-08-11T23:09:48.139781Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "a0f9c663-4267-458c-8105-3c38a54046bc",
+      "messageId": "0x41f0945800b73d89e32bd12b60f7f47c4244f6e23d4f503e64aa2632255f6930",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+      "messageType": "DISPATCH",
+      "sourceChainId": 31337,
+      "destinationChainId": 31339,
+      "routeId": "970804d3-015d-4396-89a5-3df2b48d5a21",
+      "routeVersion": 1,
+      "status": "QUEUED",
+      "payload": {
+        "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+        "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+        "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+        "attemptNumber": 1,
+        "criteriaHash": "0xadce38e4d68635d6f5ccba2463213e7997f4b85195d32ee2469dfd53e2605c03",
+        "riskLevel": "LOW",
+        "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad",
+        "reward": "4.20000000",
+        "settlementAsset": "USDC",
+        "payoutAsset": "CTK"
+      },
+      "transactionHash": null,
+      "relayAttempts": 0,
+      "lastError": null,
+      "deliveredAt": null,
+      "createdAt": "2026-08-11T23:09:02.351875Z",
+      "updatedAt": "2026-08-11T23:09:02.351875Z"
+    },
+    {
+      "id": "c3834259-32b2-47b7-8d10-26867ce68006",
+      "messageId": "0xbd202058fb80f5b576a98ee161e9073b086050e47640892cabcc147ab7fe8365",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "messageType": "DISPATCH",
+      "sourceChainId": 31337,
+      "destinationChainId": 31340,
+      "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+      "routeVersion": 1,
+      "status": "QUEUED",
+      "payload": {
+        "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+        "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+        "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+        "attemptNumber": 2,
+        "criteriaHash": "0xadce38e4d68635d6f5ccba2463213e7997f4b85195d32ee2469dfd53e2605c03",
+        "riskLevel": "LOW",
+        "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad",
+        "reward": "4.20000000",
+        "settlementAsset": "USDC",
+        "payoutAsset": "DTK"
+      },
+      "transactionHash": null,
+      "relayAttempts": 0,
+      "lastError": null,
+      "deliveredAt": null,
+      "createdAt": "2026-08-11T23:09:02.597280Z",
+      "updatedAt": "2026-08-11T23:09:02.597280Z"
+    },
+    {
+      "id": "dd2ceffc-80ba-4851-b39a-e01dc3ec3d0b",
+      "messageId": "0xa386ddb8cc4f655cdb50975803affa5fa78fc79a3d28e52b5644c12a75df2978",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "messageType": "RESULT_PROOF",
+      "sourceChainId": 31340,
+      "destinationChainId": 31337,
+      "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+      "routeVersion": 1,
+      "status": "DELIVERED",
+      "payload": {
+        "resultHash": "0xaf417770ae5c8c4c8b84bdc1431a3a1da007712f881aa3a9576be061be095d5b",
+        "proofHash": "0x07a4644bfe0f8a760f577c0cbf5b7b20db98c9a7de05477620357e5743d9d7c6"
+      },
+      "transactionHash": null,
+      "relayAttempts": 1,
+      "lastError": null,
+      "deliveredAt": "2026-08-11T23:09:47.331533Z",
+      "createdAt": "2026-08-11T23:09:47.332542Z",
+      "updatedAt": "2026-08-11T23:09:47.332542Z"
+    }
+  ],
+  "ledger": [
+    {
+      "id": "527ed414-3fc4-4a2f-84e0-e98540eaba77",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 1,
+      "entryType": "MODEL_RESERVATION",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "8",
+      "fromAccount": "requester:d73f3341-19a1-4ab2-a8c4-0b3b48408734:funding-model",
+      "toAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:available-model",
+      "chainId": 31337,
+      "nodeId": null,
+      "attemptId": null,
+      "transactionHash": null,
+      "metadata": {
+        "termsHash": "0xeab7b3324f0c33fb3e3f2d3d8ab8ce663ae397b0eb16ee4aea3f69f56a378c41",
+        "notOnchainFunds": true
+      },
+      "createdAt": "2026-08-11T23:09:00.230330Z"
+    },
+    {
+      "id": "6edf8817-5bf4-455d-b1f5-15b5ee8f078a",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 2,
+      "entryType": "RESERVE",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "4.2",
+      "fromAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:available",
+      "toAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:reserved:58e82dbd-1924-4cec-81d3-f9002c851614",
+      "chainId": 31337,
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+      "transactionHash": null,
+      "metadata": {},
+      "createdAt": "2026-08-11T23:09:02.352892Z"
+    },
+    {
+      "id": "987273ab-4672-49d2-b5aa-2debe8696748",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 3,
+      "entryType": "RELEASE_RESERVATION",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "4.2",
+      "fromAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:reserved:58e82dbd-1924-4cec-81d3-f9002c851614",
+      "toAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:available",
+      "chainId": 31337,
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+      "transactionHash": null,
+      "metadata": {
+        "failureReasonCode": "AGENT_TIMEOUT"
+      },
+      "createdAt": "2026-08-11T23:09:02.543070Z"
+    },
+    {
+      "id": "1f1602ce-8249-46d4-b716-f5f8ba597a07",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 4,
+      "entryType": "RESERVE",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "4.2",
+      "fromAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:available",
+      "toAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:reserved:22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "chainId": 31337,
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "transactionHash": null,
+      "metadata": {},
+      "createdAt": "2026-08-11T23:09:02.598293Z"
+    },
+    {
+      "id": "5a161caa-66dd-45c6-bdd3-687ccbcaa378",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 5,
+      "entryType": "PAYOUT",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "4.2",
+      "fromAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:reserved:22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "toAccount": "agent:workflow-verification-delivery-d",
+      "chainId": 31340,
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "transactionHash": null,
+      "metadata": {
+        "routeVersion": 1,
+        "settlementMessageId": null,
+        "sourceConfirmTxHash": null,
+        "payoutStatus": "PENDING",
+        "payoutAsset": "DTK",
+        "payoutAmount": "4.20000000",
+        "payoutTxHash": null
+      },
+      "createdAt": "2026-08-11T23:09:47.671413Z"
+    },
+    {
+      "id": "6f7e2471-3d9f-43f9-bc85-3ad051d5ece8",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 6,
+      "entryType": "PLATFORM_FEE",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "0.5",
+      "fromAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:available",
+      "toAccount": "platform:fees",
+      "chainId": 31337,
+      "nodeId": null,
+      "attemptId": null,
+      "transactionHash": null,
+      "metadata": {},
+      "createdAt": "2026-08-11T23:09:48.137932Z"
+    },
+    {
+      "id": "c34686c2-c6fc-426d-8f96-e5bce9f39456",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "sequence": 7,
+      "entryType": "REFUND",
+      "assetKind": "TOKEN",
+      "assetSymbol": "USDC",
+      "amount": "3.3",
+      "fromAccount": "escrow:d7c48f4a-7cc5-4e46-9a99-00c1574ad66d:available",
+      "toAccount": "requester:d73f3341-19a1-4ab2-a8c4-0b3b48408734",
+      "chainId": 31337,
+      "nodeId": null,
+      "attemptId": null,
+      "transactionHash": null,
+      "metadata": {},
+      "createdAt": "2026-08-11T23:09:48.139781Z"
+    }
+  ],
+  "gasDeposits": [],
+  "feeLedger": [],
+  "coordinatorDecisions": [
+    {
+      "id": "a54ee569-75e5-4461-bad8-c7b298cad045",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeId": null,
+      "attemptId": null,
+      "coordinatorDid": "did:local:coordinator",
+      "decisionType": "WORKFLOW_CREATED",
+      "policyVersion": "RULE_PLANNER_V1",
+      "inputHash": "0xeab7b3324f0c33fb3e3f2d3d8ab8ce663ae397b0eb16ee4aea3f69f56a378c41",
+      "decisionHash": "0xa640b9f18ffb4300440c49f74e7f05c367bb277a8ec1a661260aa3235c247e95",
+      "payload": {
+        "input": {
+          "title": "REAL-F3 timeout and Agent replacement",
+          "objective": "Inject a timeout into the first real Agent attempt, then recover with a new Agent attempt.",
+          "budget": "8.00",
+          "platformFee": "0.50",
+          "currency": "USDC",
+          "sourceChainId": 31337,
+          "inputPayload": {
+            "experimentScenario": "REAL-F3",
+            "language": "zh-CN"
+          },
+          "nodes": [
+            {
+              "nodeKey": "N1",
+              "title": "Recoverable research task",
+              "description": "Summarize why stable nodeId and independent attemptId prevent duplicate settlement.",
+              "capability": "research",
+              "dependsOn": [],
+              "acceptanceCriteria": {
+                "requiredFields": [
+                  "summary",
+                  "score",
+                  "sources"
+                ],
+                "rules": [
+                  "Return a concise result that directly answers the objective.",
+                  "Do not invent sources or completed artifacts."
+                ]
+              },
+              "inputPayload": {
+                "language": "zh-CN",
+                "topic": "attempt recovery"
+              },
+              "reward": "4.20",
+              "riskLevel": "LOW",
+              "reviewPolicyVersion": "RISK_REVIEW_V2",
+              "requiredApprovals": 0,
+              "challengePeriodSeconds": 0,
+              "samplingRateBps": 0,
+              "reviewBudget": "0",
+              "maxAttempts": 3,
+              "riskAssessment": {
+                "score": 15,
+                "riskLevel": "LOW",
+                "reasons": [
+                  "checks 3 required result field(s)"
+                ],
+                "assignmentMode": "MANUAL"
+              }
+            }
+          ]
+        },
+        "referenceCode": "WF-1027",
+        "fundingMode": "RESERVED"
+      },
+      "createdAt": "2026-08-11T23:09:00.232328Z",
+      "updatedAt": "2026-08-11T23:09:00.232328Z"
+    },
+    {
+      "id": "d0368ceb-7ba3-4295-9fd6-b5bfb8edf89e",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614",
+      "coordinatorDid": "did:local:coordinator",
+      "decisionType": "AGENT_DISPATCH",
+      "policyVersion": "MATCH_V1",
+      "inputHash": "0x85cc34fe038ba9298c8bfc8eb95f8bca9d1e85f2e011eb67b7a8a77b6a545f59",
+      "decisionHash": "0xe19575ae0316868121814234075c747457d7ddf5021955db099e4725f97f5976",
+      "payload": {
+        "input": {
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "capability": "research"
+        },
+        "agentKey": "workflow-multimodal-research-codex-c",
+        "homeChainId": 31339,
+        "routeId": "970804d3-015d-4396-89a5-3df2b48d5a21",
+        "routeVersion": 1,
+        "candidateRank": 1,
+        "matchScore": "100.000"
+      },
+      "createdAt": "2026-08-11T23:09:02.354891Z",
+      "updatedAt": "2026-08-11T23:09:02.354891Z"
+    },
+    {
+      "id": "34edfe7b-b1c1-4279-9be8-87a75c090424",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "coordinatorDid": "did:local:coordinator",
+      "decisionType": "AGENT_DISPATCH",
+      "policyVersion": "MATCH_V1",
+      "inputHash": "0x85cc34fe038ba9298c8bfc8eb95f8bca9d1e85f2e011eb67b7a8a77b6a545f59",
+      "decisionHash": "0x13c60c6919673585a2983d211c6130104145d700722fe952f39bdf049b8961d6",
+      "payload": {
+        "input": {
+          "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+          "capability": "research"
+        },
+        "agentKey": "workflow-verification-delivery-d",
+        "homeChainId": 31340,
+        "routeId": "16cd7983-524d-45ed-b500-28ed95233b24",
+        "routeVersion": 1,
+        "candidateRank": 2,
+        "matchScore": "54.000"
+      },
+      "createdAt": "2026-08-11T23:09:02.601423Z",
+      "updatedAt": "2026-08-11T23:09:02.601423Z"
+    },
+    {
+      "id": "7ac737c4-6c93-4e97-9e6c-d4689c02360c",
+      "workflowId": "d7c48f4a-7cc5-4e46-9a99-00c1574ad66d",
+      "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+      "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+      "coordinatorDid": "did:local:coordinator",
+      "decisionType": "RESULT_REVIEW",
+      "policyVersion": "RISK_REVIEW_V2",
+      "inputHash": "0xf9a0eaa68d07d72a72fb4501f2bf7d5615b6ba04d6de392546715c3f6161bbc9",
+      "decisionHash": "0x623cd639aa22de92eae3dc11f38213e9bca2f55331509bd11655655e890c30ed",
+      "payload": {
+        "input": {
+          "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+          "criteriaHash": "0xadce38e4d68635d6f5ccba2463213e7997f4b85195d32ee2469dfd53e2605c03",
+          "resultHash": "0xaf417770ae5c8c4c8b84bdc1431a3a1da007712f881aa3a9576be061be095d5b",
+          "proofHash": "0x07a4644bfe0f8a760f577c0cbf5b7b20db98c9a7de05477620357e5743d9d7c6",
+          "riskLevel": "LOW",
+          "reviewPolicyHash": "0x75e23f0d295ef5290cf0845cc406e86c6ea182cd908c64186f6dbeb28dd69bad",
+          "reviewSampled": false,
+          "randomnessMode": "NOT_REQUIRED",
+          "randomnessStatus": "NOT_REQUIRED",
+          "randomnessRequestId": null,
+          "randomnessCommitment": null,
+          "randomnessProofHash": null,
+          "requiredApprovals": 0,
+          "approvals": [],
+          "challenge": null,
+          "passed": true,
+          "reason": "Immutable acceptance criteria passed",
+          "source": "COORDINATOR_AUTOMATIC"
+        },
+        "passed": true,
+        "reason": "Immutable acceptance criteria passed",
+        "reviewHash": "0xf9a0eaa68d07d72a72fb4501f2bf7d5615b6ba04d6de392546715c3f6161bbc9"
+      },
+      "createdAt": "2026-08-11T23:09:47.514752Z",
+      "updatedAt": "2026-08-11T23:09:47.514752Z"
+    }
+  ],
+  "protocolJobs": [],
+  "ledgerSummary": {
+    "assets": [
+      {
+        "assetKind": "TOKEN",
+        "assetSymbol": "USDC",
+        "debits": "28.600000000000",
+        "credits": "28.600000000000",
+        "balanced": true
+      }
+    ],
+    "balanced": true,
+    "entryCount": 7
+  }
+}

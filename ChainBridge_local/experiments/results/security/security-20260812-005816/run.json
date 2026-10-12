@@ -1,0 +1,42 @@
+{
+  "runId": "security-20260812-005816",
+  "startedAt": "2026-08-11T16:58:16.421430Z",
+  "mode": "offline",
+  "sourceVersion": "chainbridge-v1-hardening",
+  "passed": 1,
+  "failed": 3,
+  "results": [
+    {
+      "scenario_id": "S01-S07",
+      "name": "signer_policy_suite",
+      "passed": false,
+      "duration_ms": 6054,
+      "evidence": "signer-policy.log",
+      "error": "exit_code=1"
+    },
+    {
+      "scenario_id": "S08-S11",
+      "name": "worker_reliability_suite",
+      "passed": true,
+      "duration_ms": 1279,
+      "evidence": "worker-reliability.log",
+      "error": ""
+    },
+    {
+      "scenario_id": "S01-S05",
+      "name": "platform_security_regression",
+      "passed": false,
+      "duration_ms": 7540,
+      "evidence": "platform-security.log",
+      "error": "exit_code=1"
+    },
+    {
+      "scenario_id": "S14",
+      "name": "requester_wallet_checkpoint",
+      "passed": false,
+      "duration_ms": 7,
+      "evidence": "address=0xb1a77541eb28a6e01ede88a57232d64d78356bb5;sha256=0765891fdbe24e864c35a8d1b317781a3edd2de61d4c0b36f793ea65f59d1377;encrypted=False",
+      "error": ""
+    }
+  ]
+}

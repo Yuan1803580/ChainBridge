@@ -1,0 +1,17 @@
+{
+  "workflow-multimodal-research-codex-c": {
+    "did": "did:local:workflow-multimodal-research-codex-c",
+    "chainId": 31339,
+    "homeWallet": "0x64222D83C6e13735733Ae10B2ffa0BC5F5498eF1",
+    "allowedContracts": {
+      "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9": {
+        "selectors": ["0xe916e9b2"]
+      }
+    },
+    "allowedRouteKeys": ["A_TO_C"],
+    "maxValueWei": "0",
+    "maxGas": 500000,
+    "maxGasPriceWei": "100000000000",
+    "maxTtlSeconds": 300
+  }
+}

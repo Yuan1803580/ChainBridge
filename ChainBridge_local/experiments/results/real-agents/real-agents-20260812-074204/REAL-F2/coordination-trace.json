@@ -1,0 +1,50 @@
+[
+  {
+    "step": 1,
+    "nodeKey": "N3",
+    "desiredAgent": "delivery",
+    "durationMs": 19839,
+    "actions": [
+      {
+        "action": "idle",
+        "reason": "waiting for an active attempt or settled dependency"
+      },
+      {
+        "action": "agent_result_submitted",
+        "agentKey": "workflow-verification-delivery-d",
+        "attemptId": "694c4a34-e64c-42a5-8c8f-e5abf190bfcd",
+        "resultHash": "0x1f3c7382c4069c8edbbd5d75676a4efbdf56ce9e60796cf19f07d0be81e08af7"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 2,
+    "nodeKey": "N3",
+    "desiredAgent": "delivery",
+    "durationMs": 58,
+    "actions": [
+      {
+        "action": "review_passed",
+        "nodeId": "acfff370-bd3d-40d6-a94e-78403c4bc615",
+        "attemptId": "694c4a34-e64c-42a5-8c8f-e5abf190bfcd"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 3,
+    "nodeKey": "N3",
+    "desiredAgent": "delivery",
+    "durationMs": 74,
+    "actions": [
+      {
+        "action": "node_settled",
+        "nodeId": "acfff370-bd3d-40d6-a94e-78403c4bc615",
+        "attemptId": "694c4a34-e64c-42a5-8c8f-e5abf190bfcd",
+        "unlocked": []
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  }
+]

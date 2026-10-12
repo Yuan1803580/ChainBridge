@@ -1,0 +1,30 @@
+{
+  "runId": "a5f82522-f674-4b6c-b23f-020d5a0bf927",
+  "scenarioId": "REAL-F2",
+  "workflowId": "802df513-c3eb-484d-9203-3bfd905ca7d4",
+  "referenceCode": "WF-1026",
+  "passed": false,
+  "workflowStatus": "COMPLETED",
+  "nodeCount": 3,
+  "settledNodeCount": 3,
+  "attemptCount": 4,
+  "failedAttemptCount": 1,
+  "agentCount": 2,
+  "agentKeys": "workflow-multimodal-research-codex-c;workflow-verification-delivery-d",
+  "workflowDurationMs": 148839,
+  "runnerDurationMs": 149480,
+  "paidAmount": "12.6",
+  "refundedAmount": "1.9",
+  "platformFee": "0.5",
+  "ledgerBalanced": true,
+  "payoutEntryCount": 3,
+  "duplicatePayment": false,
+  "failureReason": "REAL-F2 Agent assignment mismatch: {'N1': 'workflow-multimodal-research-codex-c', 'N2': 'workflow-multimodal-research-codex-c', 'N3': 'workflow-verification-delivery-d'}",
+  "workflowFile": "D:\\agent-crosschain-platform-experiment-v2\\experiments\\results\\real-agents\\real-agents-20260812-070630\\REAL-F2\\workflow.json",
+  "source": "new-workflow",
+  "startedAt": "2026-08-11T23:06:30.634073Z",
+  "finishedAt": "2026-08-11T23:09:00.119576Z",
+  "acceptanceErrors": [
+    "REAL-F2 Agent assignment mismatch: {'N1': 'workflow-multimodal-research-codex-c', 'N2': 'workflow-multimodal-research-codex-c', 'N3': 'workflow-verification-delivery-d'}"
+  ]
+}

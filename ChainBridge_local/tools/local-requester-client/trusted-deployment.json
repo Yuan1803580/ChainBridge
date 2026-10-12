@@ -1,0 +1,8 @@
+{
+  "mode": "LOCAL_EXPERIMENT",
+  "chainId": 31337,
+  "deploymentId": "0x9b6ce42d858f33572b1a8f78c34ada361dfc92acfa3ae0dd0a13ca4010333419",
+  "sourceToken": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+  "taskEscrow": "0x610178da211fef7d417bc0e6fed39f05609ad788",
+  "gasTreasury": "0x0165878a594ca255338adfa4d48449f69242eb8f"
+}

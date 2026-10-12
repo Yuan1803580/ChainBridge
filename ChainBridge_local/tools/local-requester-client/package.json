@@ -1,0 +1,18 @@
+{
+  "name": "local-requester-client",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Independent local EVM requester for the cross-chain Agent workflow experiment.",
+  "scripts": {
+    "requester": "node src/cli.js",
+    "serve": "node src/server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "ethers": "^6.15.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

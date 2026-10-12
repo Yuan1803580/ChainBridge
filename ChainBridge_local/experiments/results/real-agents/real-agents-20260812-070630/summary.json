@@ -1,0 +1,37 @@
+{
+  "suiteId": "real-agents-20260812-070630",
+  "startedAt": "2026-08-11T23:06:30.489652Z",
+  "finishedAt": "2026-08-11T23:09:48.370090Z",
+  "apiUrl": "http://127.0.0.1:8200",
+  "totalRuns": 3,
+  "passed": 1,
+  "failed": 2,
+  "allPassed": false,
+  "failures": [],
+  "scenarios": [
+    {
+      "scenarioId": "REAL-F1",
+      "runs": 1,
+      "passed": 1,
+      "failed": 0,
+      "passRate": 1.0,
+      "averageRunnerDurationMs": 35.0
+    },
+    {
+      "scenarioId": "REAL-F2",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 149480.0
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 48143.0
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+[
+  {
+    "step": 1,
+    "nodeKey": "N1",
+    "desiredAgent": "kimi",
+    "durationMs": 54074,
+    "actions": [
+      {
+        "action": "node_dispatched",
+        "nodeId": "65391c66-f0a0-4e27-ac89-1155f4d32869",
+        "attemptId": "af8faef4-238a-423a-930e-8d424a1f1236",
+        "agentKey": "workflow-multimodal-research-codex-c",
+        "chainId": 31339,
+        "routeVersion": 1,
+        "candidateRank": 1,
+        "matchScore": "45.000"
+      },
+      {
+        "action": "agent_result_submitted",
+        "agentKey": "workflow-multimodal-research-codex-c",
+        "attemptId": "af8faef4-238a-423a-930e-8d424a1f1236",
+        "resultHash": "0x9403a7c1a64325ce0364985b0a5f8be306bab45f507c4dd545d365b392d8ae9b"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 2,
+    "nodeKey": "N1",
+    "desiredAgent": "kimi",
+    "durationMs": 146,
+    "actions": [
+      {
+        "action": "review_passed",
+        "nodeId": "65391c66-f0a0-4e27-ac89-1155f4d32869",
+        "attemptId": "af8faef4-238a-423a-930e-8d424a1f1236"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 3,
+    "nodeKey": "N1",
+    "desiredAgent": "kimi",
+    "durationMs": 721,
+    "actions": [
+      {
+        "action": "idle",
+        "reason": "waiting for an active attempt or settled dependency"
+      },
+      {
+        "action": "failure_classified",
+        "incidentId": "8b64bc77-a6e6-4886-a720-502b3d8304a1",
+        "classification": {
+          "party": "AGENT",
+          "retryable": true,
+          "agentFault": true,
+          "routePaused": false,
+          "gasTreatment": "AGENT_ATTEMPT_DEPOSIT"
+        }
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 4,
+    "nodeKey": "N2",
+    "desiredAgent": "codex",
+    "durationMs": 57316,
+    "actions": [
+      {
+        "action": "node_dispatched",
+        "nodeId": "cb5f6f17-17f4-4bda-8b72-ee0bcac3b6b7",
+        "attemptId": "a8360f3c-0ba8-41f9-b135-b44e92a55dee",
+        "agentKey": "workflow-multimodal-research-codex-c",
+        "chainId": 31339,
+        "routeVersion": 1,
+        "candidateRank": 1,
+        "matchScore": "100.000"
+      },
+      {
+        "action": "agent_result_submitted",
+        "agentKey": "workflow-multimodal-research-codex-c",
+        "attemptId": "a8360f3c-0ba8-41f9-b135-b44e92a55dee",
+        "resultHash": "0x16185b5e5a7ed1a362d552ca3f07a58d562834123a4d5f24aac581f3aaf2dd8b"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 5,
+    "nodeKey": "N2",
+    "desiredAgent": "codex",
+    "durationMs": 31292,
+    "actions": [
+      {
+        "action": "idle",
+        "reason": "waiting for an active attempt or settled dependency"
+      },
+      {
+        "action": "agent_result_submitted",
+        "agentKey": "workflow-verification-delivery-d",
+        "attemptId": "0c505987-dcf7-41a8-bdc5-88c2622f948b",
+        "resultHash": "0x012f9ec5bd4f546877bc692fc6364bf469be3f5ea140e36ea31fc6e1a808f73d"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 6,
+    "nodeKey": "N3",
+    "desiredAgent": "delivery",
+    "durationMs": 161,
+    "actions": [
+      {
+        "action": "review_passed",
+        "nodeId": "a6c04db6-bf99-4e3b-8706-7d7bc88e8b99",
+        "attemptId": "0c505987-dcf7-41a8-bdc5-88c2622f948b"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 7,
+    "nodeKey": "N3",
+    "desiredAgent": "delivery",
+    "durationMs": 123,
+    "actions": [
+      {
+        "action": "node_settled",
+        "nodeId": "a6c04db6-bf99-4e3b-8706-7d7bc88e8b99",
+        "attemptId": "0c505987-dcf7-41a8-bdc5-88c2622f948b",
+        "unlocked": []
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  }
+]

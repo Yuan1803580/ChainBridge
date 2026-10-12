@@ -1,0 +1,4 @@
+﻿runId,scenarioId,workflowId,referenceCode,passed,workflowStatus,nodeCount,settledNodeCount,attemptCount,failedAttemptCount,agentCount,agentKeys,workflowDurationMs,runnerDurationMs,paidAmount,refundedAmount,platformFee,ledgerBalanced,payoutEntryCount,duplicatePayment,failureReason,workflowFile
+f8c30913-7a39-4eb5-bf7e-75fef13b3cd2,REAL-F1,60ee4ef1-0ee1-46d2-aaf6-e11e4fc43324,WF-1023,True,COMPLETED,1,1,1,0,1,workflow-verification-delivery-d,711177,38,4.2,3.3,0.5,True,1,False,,D:\agent-crosschain-platform-experiment-v2\experiments\results\real-agents\real-agents-20260812-071405\REAL-F1\workflow.json
+dfee9ed0-4bbc-4b45-993f-2eb93d123f51,REAL-F2,,,False,,,,,,,,,83578,,,,,,,RuntimeError: Workflow f4f88975-5d22-4b05-a132-a43dd686c5a1 did not terminate after 30 coordination steps,
+e1bb805d-21c9-492c-bd9c-39ccaa2dc207,REAL-F3,,,False,,,,,,,,,7064,,,,,,,RuntimeError: REAL-F3 first attempt used unexpected Agent: workflow-research-kimi-external-v2,

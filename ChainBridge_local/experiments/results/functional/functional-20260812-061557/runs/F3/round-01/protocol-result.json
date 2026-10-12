@@ -1,0 +1,444 @@
+{
+  "schemaVersion": 1,
+  "runId": "6cd9f212-62e5-423a-8c71-6600a136212b",
+  "completedAt": "2026-08-11T22:18:41.800Z",
+  "environment": "independent-local-evm",
+  "chains": [
+    {
+      "key": "A",
+      "chainId": 31337,
+      "rpcUrl": "http://127.0.0.1:8645"
+    },
+    {
+      "key": "B",
+      "chainId": 31338,
+      "rpcUrl": "http://127.0.0.1:8646"
+    },
+    {
+      "key": "C",
+      "chainId": 31339,
+      "rpcUrl": "http://127.0.0.1:8647"
+    },
+    {
+      "key": "D",
+      "chainId": 31340,
+      "rpcUrl": "http://127.0.0.1:8648"
+    }
+  ],
+  "workflow": {
+    "workflowId": "0x0308c70008f0399979b3df22aa1f0facfb37710ee538afa98500998f7553577f",
+    "nodeOne": {
+      "attemptId": "0x3e68b1763a7266d02785a45cea28558ceba64513353c6ec7711035a3973cbd7e",
+      "chainId": 31338,
+      "status": "SETTLED",
+      "payout": "15654791"
+    },
+    "nodeTwo": {
+      "failedAttempt": {
+        "attemptId": "0x78e7d44eb8720e5037da1aeb18ff1331e53c441f8b7ce1325433c93a733f5718",
+        "chainId": 31339,
+        "status": "STALE_REJECTED",
+        "payout": "0"
+      },
+      "successfulAttempt": {
+        "attemptId": "0xffa2ef08024180c8e5575d1f14ff9ce66e4acf2b44ffeb807fa2055d8747a51e",
+        "chainId": 31340,
+        "status": "SETTLED",
+        "payout": "13510374"
+      }
+    }
+  },
+  "funds": {
+    "budget": "30000000",
+    "sourceSpent": "15000000",
+    "platformFee": "1000000",
+    "refund": "14000000",
+    "sourceBacking": "14734481",
+    "conserved": true
+  },
+  "faultEvidence": {
+    "crashAfterEnqueueRecovered": true,
+    "relayRestartDidNotDuplicate": true,
+    "staleAttemptRejected": true,
+    "paymentRequiredBeforeSettled": true
+  },
+  "metrics": {
+    "measuredTransactions": 46,
+    "gasByChain": {
+      "31337": "4143886",
+      "31338": "1044341",
+      "31339": "495514",
+      "31340": "1044365"
+    },
+    "transactions": [
+      {
+        "phase": "workflow-create",
+        "chainId": 31337,
+        "hash": "0x731494d6f50d2baa6a9c105df1312aee597901a1219cb023b9518efefcf85909",
+        "blockNumber": "24",
+        "gasUsed": "92931",
+        "durationMs": 82.57
+      },
+      {
+        "phase": "node-1-register",
+        "chainId": 31337,
+        "hash": "0x08ad9ed5036091d6df308979c82234241b2ffeb4af4dcefc8d6ba8d6b8b94614",
+        "blockNumber": "25",
+        "gasUsed": "104410",
+        "durationMs": 41.26
+      },
+      {
+        "phase": "node-2-register",
+        "chainId": 31337,
+        "hash": "0xbb9db96ffa4791b10d9bfad3f16ac71bd8c3747422843d4fcdd7374098fcafa0",
+        "blockNumber": "26",
+        "gasUsed": "196098",
+        "durationMs": 51.32
+      },
+      {
+        "phase": "budget-mint",
+        "chainId": 31337,
+        "hash": "0x99e80951eed6f68d5ad110205a741cedc1af4e1ecdaa4e7bc83ddfaa619a880e",
+        "blockNumber": "27",
+        "gasUsed": "51799",
+        "durationMs": 26
+      },
+      {
+        "phase": "budget-approve",
+        "chainId": 31337,
+        "hash": "0x0ea3b134935e24708618e4086dea9d6e4218073b5b5cf9f2b2b43608a11d630f",
+        "blockNumber": "28",
+        "gasUsed": "46904",
+        "durationMs": 34.8
+      },
+      {
+        "phase": "budget-lock",
+        "chainId": 31337,
+        "hash": "0xf63a8f1d34806370b9dc466f607ef9b6b9fa905469944980bffd74a09bafd14b",
+        "blockNumber": "29",
+        "gasUsed": "167021",
+        "durationMs": 30.5
+      },
+      {
+        "phase": "assign-b-1",
+        "chainId": 31337,
+        "hash": "0x95e4eefe322d5c443a6e0baa2e9505be7ab1b9ebd6052dd0c3b6734e1eb81556",
+        "blockNumber": "30",
+        "gasUsed": "80179",
+        "durationMs": 31.52
+      },
+      {
+        "phase": "reserve-b-1",
+        "chainId": 31337,
+        "hash": "0x9932f4c9eba1e9f755d0e58f2a741a8ebcdf674cb9640906c4f17874e2e1cbcb",
+        "blockNumber": "31",
+        "gasUsed": "166509",
+        "durationMs": 29.94
+      },
+      {
+        "phase": "dispatch-b-1",
+        "chainId": 31337,
+        "hash": "0xb3366ddddb9b0dfeaa3c2280fbbf2f8ae9401387a5cc0cc0e4996f9f118134ae",
+        "blockNumber": "32",
+        "gasUsed": "80918",
+        "durationMs": 30.39
+      },
+      {
+        "phase": "relay-receiveAssignmentV2",
+        "chainId": 31338,
+        "hash": "0x773085504d0c447c8263f4380cbe517acad8592083121f67b2fdc1cb4c7f37f3",
+        "blockNumber": "18",
+        "gasUsed": "351969",
+        "durationMs": 122.78
+      },
+      {
+        "phase": "b-1-start",
+        "chainId": 31338,
+        "hash": "0x8a6d51513fe41b5935f2dd0ff62c73e24c8c3cf32a9ca964dffa135d0e90e4f0",
+        "blockNumber": "19",
+        "gasUsed": "35920",
+        "durationMs": 109.29
+      },
+      {
+        "phase": "b-1-submit-result",
+        "chainId": 31338,
+        "hash": "0x442a0ebd2fd16179e872c6b919113b19860bb391bed12506c1ec7f65faf8d7b3",
+        "blockNumber": "20",
+        "gasUsed": "107589",
+        "durationMs": 30.04
+      },
+      {
+        "phase": "relay-receiveResultProofV2",
+        "chainId": 31337,
+        "hash": "0x49b879904b62dd68874523b0afd55c4e33b17f1538e86872cfa0837fb44893a6",
+        "blockNumber": "33",
+        "gasUsed": "263116",
+        "durationMs": 51.51
+      },
+      {
+        "phase": "review-b-pass",
+        "chainId": 31337,
+        "hash": "0x5544507a6ae7a2029018be14a80d49bafd1538552386d47226ec9002e4ae11cf",
+        "blockNumber": "34",
+        "gasUsed": "172954",
+        "durationMs": 31.9
+      },
+      {
+        "phase": "node-1-success",
+        "chainId": 31337,
+        "hash": "0xfd89a6a6a80c118649b8957a03c999d28527f0e5a6a27a42534e28d9642afc59",
+        "blockNumber": "35",
+        "gasUsed": "34646",
+        "durationMs": 30.15
+      },
+      {
+        "phase": "b-1-prepare-settlement",
+        "chainId": 31337,
+        "hash": "0xa543dea2d05dd4966d4e190f1e13b5d29ef5afc26905fc98f7fb61025f022a0b",
+        "blockNumber": "36",
+        "gasUsed": "494400",
+        "durationMs": 37.3
+      },
+      {
+        "phase": "b-1-settlement-pending",
+        "chainId": 31337,
+        "hash": "0x8816112b20160bb845dbc5dbb5a52b0a78b0abf37b15342b0e050cde2dbbb6ef",
+        "blockNumber": "37",
+        "gasUsed": "35682",
+        "durationMs": 29.76
+      },
+      {
+        "phase": "relay-receiveSettlementV2",
+        "chainId": 31338,
+        "hash": "0xf256edbf515283d1b0f1842e3a8ef137c068b8186b9254fed3fddb2943ef9443",
+        "blockNumber": "21",
+        "gasUsed": "353340",
+        "durationMs": 40.7
+      },
+      {
+        "phase": "relay-executePayout",
+        "chainId": 31338,
+        "hash": "0x3327b286faf212a3a8b62e4599b80ce2aad4e6843ca4c36b7043e66182cbc601",
+        "blockNumber": "22",
+        "gasUsed": "195523",
+        "durationMs": 33.48
+      },
+      {
+        "phase": "relay-receiveConfirmationV2",
+        "chainId": 31337,
+        "hash": "0x674a996549b0efeed32495d7294bb6a3985f4743a45bdbffe274935b3b5198c8",
+        "blockNumber": "38",
+        "gasUsed": "126578",
+        "durationMs": 32.16
+      },
+      {
+        "phase": "b-1-settled",
+        "chainId": 31337,
+        "hash": "0x32de0e4975105846134b855f75e09a6a2d261f8361154422a7ab21b98e1000f2",
+        "blockNumber": "39",
+        "gasUsed": "64908",
+        "durationMs": 37.58
+      },
+      {
+        "phase": "assign-C-1",
+        "chainId": 31337,
+        "hash": "0xc216628c6626686ee8ba64c1fa56e67145e1796b1b3ff227006e8fa4054910a4",
+        "blockNumber": "40",
+        "gasUsed": "80203",
+        "durationMs": 33.68
+      },
+      {
+        "phase": "reserve-C-1",
+        "chainId": 31337,
+        "hash": "0x2259d41e12eae42492b18160b882a1c3538338620cd259badca8d8ee9434f25f",
+        "blockNumber": "41",
+        "gasUsed": "166521",
+        "durationMs": 30.39
+      },
+      {
+        "phase": "dispatch-C-1",
+        "chainId": 31337,
+        "hash": "0xb3d25e5d590cff013215525725cb01d63fbdea138bd7a16f791ef852cc29b644",
+        "blockNumber": "42",
+        "gasUsed": "63830",
+        "durationMs": 22.81
+      },
+      {
+        "phase": "relay-receiveAssignmentV2",
+        "chainId": 31339,
+        "hash": "0x94303704de4b1ad70e42567b70b60ad5483528b21a8ca9243b0737513d8cd48e",
+        "blockNumber": "18",
+        "gasUsed": "352005",
+        "durationMs": 35.91
+      },
+      {
+        "phase": "c-1-start",
+        "chainId": 31339,
+        "hash": "0xbd19bdb18f69c003f1adac41f061af0dfd4ec81702da7a8728622bda6559615b",
+        "blockNumber": "19",
+        "gasUsed": "35920",
+        "durationMs": 31.86
+      },
+      {
+        "phase": "c-1-timeout",
+        "chainId": 31337,
+        "hash": "0xe1a8940d35493d36c003066e85080d8b00e1414ae14da52a1875a03d08a45e8f",
+        "blockNumber": "43",
+        "gasUsed": "34602",
+        "durationMs": 30.6
+      },
+      {
+        "phase": "c-1-release-reservation",
+        "chainId": 31337,
+        "hash": "0x2804a606b7fb9e67138bb44752a9b0843e113e35876654ff430d062f2798e743",
+        "blockNumber": "44",
+        "gasUsed": "34332",
+        "durationMs": 30.08
+      },
+      {
+        "phase": "assign-D-2",
+        "chainId": 31337,
+        "hash": "0x21130d58cc6481a8a544ea3a2fc803ca7eb446d8bd1672b28785c9f6aef9d1e7",
+        "blockNumber": "48",
+        "gasUsed": "46249",
+        "durationMs": 32.39
+      },
+      {
+        "phase": "reserve-D-2",
+        "chainId": 31337,
+        "hash": "0x783c334e2e000570a8af0721f99b6eba35fd37b718043e4ff7006fbf14290f69",
+        "blockNumber": "49",
+        "gasUsed": "166521",
+        "durationMs": 29.3
+      },
+      {
+        "phase": "dispatch-D-2",
+        "chainId": 31337,
+        "hash": "0x21f9fc8732d9021cdea4584d4d6941b5efeaff8cf6d67373b9ae4cf79c8f6963",
+        "blockNumber": "50",
+        "gasUsed": "63818",
+        "durationMs": 31.55
+      },
+      {
+        "phase": "relay-receiveAssignmentV2",
+        "chainId": 31340,
+        "hash": "0x0208da34f2f4c666925c4ec89ea0a12a48707dcbce460bf8b876bdbebd6ec6dd",
+        "blockNumber": "18",
+        "gasUsed": "351981",
+        "durationMs": 38.45
+      },
+      {
+        "phase": "c-1-late-result",
+        "chainId": 31339,
+        "hash": "0x20706e77288c2c207e68e801fd9c82898abcc53a2d7182493cfdee87ac6459aa",
+        "blockNumber": "20",
+        "gasUsed": "107589",
+        "durationMs": 28.51
+      },
+      {
+        "phase": "d-2-start",
+        "chainId": 31340,
+        "hash": "0xf12c5b39e41bc8ec6e6e3f10849e656cbc760112e365192a0a0f241f8eab061d",
+        "blockNumber": "19",
+        "gasUsed": "35920",
+        "durationMs": 36.91
+      },
+      {
+        "phase": "d-2-submit-result",
+        "chainId": 31340,
+        "hash": "0xe3873820b25b7e06d4c3e29e03e2077dd099fa03896d994b615fc8b3a6ffc9c1",
+        "blockNumber": "20",
+        "gasUsed": "107589",
+        "durationMs": 32.7
+      },
+      {
+        "phase": "relay-receiveResultProofV2",
+        "chainId": 31337,
+        "hash": "0x050affd6e2a7b4ed0eb535244e8865a4ee578e75cef1139f6030ce11e77129f8",
+        "blockNumber": "51",
+        "gasUsed": "263128",
+        "durationMs": 42.76
+      },
+      {
+        "phase": "review-d-pass",
+        "chainId": 31337,
+        "hash": "0x7754186a9d003380d62bc623a2f7a64689f94699ace4cc44cabf16f4910b4024",
+        "blockNumber": "52",
+        "gasUsed": "172942",
+        "durationMs": 32.64
+      },
+      {
+        "phase": "node-2-success",
+        "chainId": 31337,
+        "hash": "0xf28caeed196784a06bbdae2c584b9c30dc4ffd7a7478f24389e5c494335614c4",
+        "blockNumber": "53",
+        "gasUsed": "34646",
+        "durationMs": 33.73
+      },
+      {
+        "phase": "d-2-prepare-settlement",
+        "chainId": 31337,
+        "hash": "0xac4233c6d4d75e27dd450f26da704659025d3cc06786cb4852596fdfb9b5eaf8",
+        "blockNumber": "54",
+        "gasUsed": "426012",
+        "durationMs": 66.99
+      },
+      {
+        "phase": "d-2-settlement-pending",
+        "chainId": 31337,
+        "hash": "0xfe7af7e9d7ffbf86ea29106c76a429c9080d49ae83a48992b9ebaf2d8050e53d",
+        "blockNumber": "55",
+        "gasUsed": "35682",
+        "durationMs": 33.47
+      },
+      {
+        "phase": "relay-receiveSettlementV2",
+        "chainId": 31340,
+        "hash": "0xde9efaf9a36737c2a835f60a780276e7160de27cfccda4bcf31bbf7ddfb57c09",
+        "blockNumber": "21",
+        "gasUsed": "353352",
+        "durationMs": 57.74
+      },
+      {
+        "phase": "relay-executePayout",
+        "chainId": 31340,
+        "hash": "0x7473670b1f077c1e699975c7d6846c05518146666a5230064033a61a495e4761",
+        "blockNumber": "22",
+        "gasUsed": "195523",
+        "durationMs": 94.49
+      },
+      {
+        "phase": "relay-receiveConfirmationV2",
+        "chainId": 31337,
+        "hash": "0xd069774a5658dde5d2ef66a72061042b6a4798963105fcba24ae9e66dd7056bb",
+        "blockNumber": "56",
+        "gasUsed": "126578",
+        "durationMs": 82.07
+      },
+      {
+        "phase": "d-2-settled",
+        "chainId": 31337,
+        "hash": "0x48773e69882100752ef375c0161200bd8a50ddb6d37fc56b8db3a612fcf09e14",
+        "blockNumber": "57",
+        "gasUsed": "53469",
+        "durationMs": 105.79
+      },
+      {
+        "phase": "platform-fee",
+        "chainId": 31337,
+        "hash": "0x6a6c5b94916a9f583b6549c70fe4df693dc17aa8e5d41ac47ad9dc7ff1c15042",
+        "blockNumber": "58",
+        "gasUsed": "94118",
+        "durationMs": 107.1
+      },
+      {
+        "phase": "budget-refund",
+        "chainId": 31337,
+        "hash": "0xb2118214950ace11623d571d9920b57af80d1467265c42ca83d636a32846a7a2",
+        "blockNumber": "59",
+        "gasUsed": "102182",
+        "durationMs": 104.47
+      }
+    ]
+  }
+}

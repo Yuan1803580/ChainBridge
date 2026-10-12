@@ -1,0 +1,55 @@
+name: agent-crosschain-experiment-v2
+
+x-besu-common: &besu-common
+  image: hyperledger/besu:24.12.2
+  restart: unless-stopped
+  command:
+    - --genesis-file=/config/genesis.json
+    - --data-path=/data
+    - --node-private-key-file=/config/node-private-key.txt
+    - --rpc-http-enabled=true
+    - --rpc-http-host=0.0.0.0
+    - --rpc-http-port=8545
+    - --rpc-http-api=ETH,NET,WEB3,DEBUG,TXPOOL
+    - --host-allowlist=*
+    - --rpc-http-cors-origins=*
+    - --miner-enabled=true
+    - --miner-coinbase=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
+    - --min-gas-price=0
+
+services:
+  chain-a:
+    <<: *besu-common
+    ports: ["9545:8545"]
+    volumes:
+      - ../../.runtime/experiment-v2/besu/chain-a:/config:ro
+      - besu-a-data:/data
+
+  chain-b:
+    <<: *besu-common
+    ports: ["9546:8545"]
+    volumes:
+      - ../../.runtime/experiment-v2/besu/chain-b:/config:ro
+      - besu-b-data:/data
+
+  chain-c:
+    <<: *besu-common
+    ports: ["9547:8545"]
+    volumes:
+      - ../../.runtime/experiment-v2/besu/chain-c:/config:ro
+      - besu-c-data:/data
+
+  chain-d:
+    <<: *besu-common
+    profiles: ["dynamic"]
+    ports: ["9548:8545"]
+    volumes:
+      - ../../.runtime/experiment-v2/besu/chain-d:/config:ro
+      - besu-d-data:/data
+
+volumes:
+  besu-a-data:
+  besu-b-data:
+  besu-c-data:
+  besu-d-data:
+

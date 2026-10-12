@@ -1,0 +1,83 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Local V1: Install Dependencies",
+      "type": "shell",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/setup-local.ps1"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Local V1: Start",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["local:v1:start"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Local V1: Four-chain Acceptance",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["local:v1:accept"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Local V1: Full Verification",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["local:v1:verify"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Local V1: Stop",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["local:v1:stop"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Contracts: Compile",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["contracts:compile"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Requester: Install Dependencies",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["requester:install"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Requester: Test",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["requester:test"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Requester: Start Service",
+      "type": "shell",
+      "command": "pnpm.cmd",
+      "args": ["requester:serve"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}

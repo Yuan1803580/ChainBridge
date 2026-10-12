@@ -1,0 +1,16 @@
+{
+  "message": "检索并比较多 Agent 工作流失败恢复相关研究，输出结构化中文报告并验证关键结论。",
+  "budget": "20.00",
+  "platformFee": "1.10",
+  "currency": "USDC",
+  "inputPayload": {
+    "language": "zh-CN",
+    "outputFormat": "structured-report",
+    "allowDynamicAgentReplacement": true,
+    "maxRetries": 2
+  },
+  "faucet": {
+    "tokenAmount": "100.00",
+    "nativeAmount": "1.00"
+  }
+}

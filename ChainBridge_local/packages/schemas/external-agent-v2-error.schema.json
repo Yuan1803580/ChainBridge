@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chainbridge.local/schemas/external-agent-v2-error.schema.json",
+  "title": "ChainBridge External Agent V2 Error",
+  "type": "object",
+  "required": ["protocolVersion", "error"],
+  "properties": {
+    "protocolVersion": { "const": "2.0" },
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "retryable", "details", "path"],
+      "properties": {
+        "code": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" },
+        "message": { "type": "string", "minLength": 1 },
+        "retryable": { "type": "boolean" },
+        "details": { "type": "object" },
+        "path": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

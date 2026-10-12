@@ -1,0 +1,46 @@
+{
+  "suiteId": "real-agents-20260812-071405",
+  "startedAt": "2026-08-11T23:14:05.504566Z",
+  "finishedAt": "2026-08-11T23:15:36.417978Z",
+  "apiUrl": "http://127.0.0.1:8200",
+  "totalRuns": 3,
+  "passed": 1,
+  "failed": 2,
+  "allPassed": false,
+  "failures": [
+    {
+      "scenarioId": "REAL-F2",
+      "error": "RuntimeError: Workflow f4f88975-5d22-4b05-a132-a43dd686c5a1 did not terminate after 30 coordination steps"
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "error": "RuntimeError: REAL-F3 first attempt used unexpected Agent: workflow-research-kimi-external-v2"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenarioId": "REAL-F1",
+      "runs": 1,
+      "passed": 1,
+      "failed": 0,
+      "passRate": 1.0,
+      "averageRunnerDurationMs": 38.0
+    },
+    {
+      "scenarioId": "REAL-F2",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 83578.0
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 7064.0
+    }
+  ]
+}

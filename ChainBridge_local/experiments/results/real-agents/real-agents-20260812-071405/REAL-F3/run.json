@@ -1,0 +1,9 @@
+{
+  "runId": "d7e1fdcb-cf0a-454b-add3-923af04c3701",
+  "scenarioId": "REAL-F3",
+  "passed": false,
+  "startedAt": "2026-08-11T23:15:29.229291Z",
+  "finishedAt": "2026-08-11T23:15:36.292951Z",
+  "runnerDurationMs": 7064,
+  "error": "RuntimeError: REAL-F3 first attempt used unexpected Agent: workflow-research-kimi-external-v2"
+}

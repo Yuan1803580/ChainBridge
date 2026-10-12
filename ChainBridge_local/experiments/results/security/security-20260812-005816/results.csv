@@ -1,0 +1,5 @@
+﻿scenario_id,name,passed,duration_ms,evidence,error
+S01-S07,signer_policy_suite,False,6054,signer-policy.log,exit_code=1
+S08-S11,worker_reliability_suite,True,1279,worker-reliability.log,
+S01-S05,platform_security_regression,False,7540,platform-security.log,exit_code=1
+S14,requester_wallet_checkpoint,False,7,address=0xb1a77541eb28a6e01ede88a57232d64d78356bb5;sha256=0765891fdbe24e864c35a8d1b317781a3edd2de61d4c0b36f793ea65f59d1377;encrypted=False,

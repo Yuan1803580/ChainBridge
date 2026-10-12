@@ -1,0 +1,97 @@
+{
+  "suite_id": "functional-20260812-061557",
+  "created_at": "2026-08-11T22:22:30.940635+00:00",
+  "source_fingerprint_sha256": "8b8822124fb0a6159148861336c99febe2dd383870dfe4d7024c64773be464cb",
+  "rounds_per_scenario": 3,
+  "total_runs": 21,
+  "passed": 21,
+  "failed": 0,
+  "all_passed": true,
+  "cleanup_passed": true,
+  "scenarios": [
+    {
+      "scenario_id": "F1",
+      "scenario_name": "single_node_success",
+      "runs": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "average_duration_ms": 3864.67,
+      "median_duration_ms": 3858,
+      "min_duration_ms": 3855,
+      "max_duration_ms": 3881
+    },
+    {
+      "scenario_id": "F2",
+      "scenario_name": "dependent_dag_success",
+      "runs": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "average_duration_ms": 29742.67,
+      "median_duration_ms": 29580,
+      "min_duration_ms": 29577,
+      "max_duration_ms": 30071
+    },
+    {
+      "scenario_id": "F3",
+      "scenario_name": "agent_timeout_recovery",
+      "runs": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "average_duration_ms": 30079.33,
+      "median_duration_ms": 29994,
+      "min_duration_ms": 29624,
+      "max_duration_ms": 30620
+    },
+    {
+      "scenario_id": "F4",
+      "scenario_name": "review_failure_recovery_gate",
+      "runs": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "average_duration_ms": 3753.67,
+      "median_duration_ms": 3766,
+      "min_duration_ms": 3705,
+      "max_duration_ms": 3790
+    },
+    {
+      "scenario_id": "F5",
+      "scenario_name": "relay_crash_recovery",
+      "runs": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "average_duration_ms": 29777.33,
+      "median_duration_ms": 29689,
+      "min_duration_ms": 29520,
+      "max_duration_ms": 30123
+    },
+    {
+      "scenario_id": "F6",
+      "scenario_name": "payout_failure_recovery",
+      "runs": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "average_duration_ms": 3811.33,
+      "median_duration_ms": 3866,
+      "min_duration_ms": 3658,
+      "max_duration_ms": 3910
+    },
+    {
+      "scenario_id": "F7",
+      "scenario_name": "late_attempt_rejection",
+      "runs": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate": 1.0,
+      "average_duration_ms": 3754.67,
+      "median_duration_ms": 3753,
+      "min_duration_ms": 3736,
+      "max_duration_ms": 3775
+    }
+  ]
+}

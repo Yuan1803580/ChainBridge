@@ -1,0 +1,21 @@
+{
+  "orderApiId": "replace-with-api-order-id",
+  "onchainSettlementId": "0xreplace-with-64-hex-characters",
+  "ccipMessageId": "0xreplace-with-64-hex-characters",
+  "transactions": {
+    "fundingSwap": { "chain": "source", "hash": "0xreplace-with-64-hex-characters" },
+    "sourceUsdcApprove": { "chain": "source", "hash": "0xreplace-with-64-hex-characters" },
+    "escrowLock": { "chain": "source", "hash": "0xreplace-with-64-hex-characters" },
+    "ccipRelease": { "chain": "source", "hash": "0xreplace-with-64-hex-characters" },
+    "destinationReceive": { "chain": "destination", "hash": "0xreplace-with-64-hex-characters" },
+    "sourceConfirmation": { "chain": "source", "hash": "0xreplace-with-64-hex-characters" },
+    "payoutUsdcApprove": { "chain": "destination", "hash": "0xreplace-with-64-hex-characters" },
+    "payoutSwap": { "chain": "destination", "hash": "0xreplace-with-64-hex-characters" }
+  },
+  "balanceChecks": [
+    { "name": "payer USDC refund", "chain": "source", "token": "0xreplace-with-address", "account": "0xreplace-with-address", "minimumRaw": "1" },
+    { "name": "payee USDC", "chain": "destination", "token": "0xreplace-with-address", "account": "0xreplace-with-address", "minimumRaw": "0" },
+    { "name": "payee STC", "chain": "destination", "token": "0xreplace-with-address", "account": "0xreplace-with-address", "minimumRaw": "1" },
+    { "name": "Escrow USDC", "chain": "source", "token": "0xreplace-with-address", "account": "0xreplace-with-address", "expectedRaw": "0" }
+  ]
+}

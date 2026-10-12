@@ -1,0 +1,63 @@
+[
+  {
+    "step": 0,
+    "nodeKey": "N1",
+    "desiredAgent": "codex",
+    "durationMs": null,
+    "actions": [
+      {
+        "action": "inject_timeout",
+        "attemptId": "58e82dbd-1924-4cec-81d3-f9002c851614"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 1,
+    "nodeKey": "N1",
+    "desiredAgent": "kimi",
+    "durationMs": 44722,
+    "actions": [
+      {
+        "action": "idle",
+        "reason": "waiting for an active attempt or settled dependency"
+      },
+      {
+        "action": "agent_result_submitted",
+        "agentKey": "workflow-verification-delivery-d",
+        "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+        "resultHash": "0xaf417770ae5c8c4c8b84bdc1431a3a1da007712f881aa3a9576be061be095d5b"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 2,
+    "nodeKey": "N1",
+    "desiredAgent": "kimi",
+    "durationMs": 142,
+    "actions": [
+      {
+        "action": "review_passed",
+        "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+        "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8"
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  },
+  {
+    "step": 3,
+    "nodeKey": "N1",
+    "desiredAgent": "kimi",
+    "durationMs": 122,
+    "actions": [
+      {
+        "action": "node_settled",
+        "nodeId": "f5906f8e-1ae8-4a85-b3c9-d0b8b3b40309",
+        "attemptId": "22160a4e-d830-46b6-ba5e-16051113f4f8",
+        "unlocked": []
+      }
+    ],
+    "workflowStatus": "RUNNING"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "workflow-research-kimi-external-v2": {
+    "did": "did:local:workflow-research-kimi-external-v2",
+    "chainId": 31338,
+    "homeWallet": "0xAd177d6A3cefA702811EB08f1EF4FE59c4da8A03",
+    "allowedContracts": {
+      "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9": {
+        "selectors": ["0xe916e9b2"]
+      }
+    },
+    "allowedRouteKeys": ["A_TO_B"],
+    "maxValueWei": "0",
+    "maxGas": 500000,
+    "maxGasPriceWei": "100000000000",
+    "maxTtlSeconds": 300
+  }
+}

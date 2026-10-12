@@ -1,0 +1,42 @@
+{
+  "suiteId": "real-agents-20260812-073635",
+  "startedAt": "2026-08-11T23:36:35.791782Z",
+  "finishedAt": "2026-08-11T23:39:33.962815Z",
+  "apiUrl": "http://127.0.0.1:8201",
+  "totalRuns": 3,
+  "passed": 2,
+  "failed": 1,
+  "allPassed": false,
+  "failures": [
+    {
+      "scenarioId": "REAL-F2",
+      "error": "RuntimeError: Workflow 17b3f7da-d621-4177-8736-c56a4b4394ba did not terminate after 30 coordination steps"
+    }
+  ],
+  "scenarios": [
+    {
+      "scenarioId": "REAL-F1",
+      "runs": 1,
+      "passed": 1,
+      "failed": 0,
+      "passRate": 1.0,
+      "averageRunnerDurationMs": 22.0
+    },
+    {
+      "scenarioId": "REAL-F2",
+      "runs": 1,
+      "passed": 0,
+      "failed": 1,
+      "passRate": 0.0,
+      "averageRunnerDurationMs": 61411.0
+    },
+    {
+      "scenarioId": "REAL-F3",
+      "runs": 1,
+      "passed": 1,
+      "failed": 0,
+      "passRate": 1.0,
+      "averageRunnerDurationMs": 116504.0
+    }
+  ]
+}

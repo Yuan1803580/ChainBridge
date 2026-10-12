@@ -1,0 +1,14 @@
+{
+  "mode": "LOCAL_EXPERIMENT",
+  "platformUrl": "http://127.0.0.1:8200",
+  "coordinatorUrl": "http://127.0.0.1:8300",
+  "requesterDid": "did:local:campus-requester",
+  "chainId": 31337,
+  "walletFile": "wallet/requester-keystore.json",
+  "stateFile": "data/requester-state.json",
+  "trustedDeploymentFile": "trusted-deployment.json",
+  "outputDirectory": "outputs",
+  "requestTimeoutMs": 120000,
+  "pollIntervalMs": 2000,
+  "maxRunCycles": 180
+}

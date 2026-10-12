@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "suiteId": "overview-20260812-075009",
+  "generatedAt": "2026-08-11T23:50:09.350418Z",
+  "allPassed": true,
+  "totalObservations": 31,
+  "passed": 31,
+  "failed": 0,
+  "passRate": 1.0,
+  "protocol": {
+    "runs": 3,
+    "passed": 3,
+    "failed": 0,
+    "passRate": 1.0,
+    "allPassed": true,
+    "deterministicStable": true,
+    "measuredTransactions": 138,
+    "averageTransactionLatencyMs": 93.46,
+    "medianTransactionLatencyMs": 93.38,
+    "p95TransactionLatencyMs": 114.19,
+    "sourceDirectory": "D:\\agent-crosschain-platform-experiment-v2\\experiments\\results\\protocol-baseline"
+  },
+  "security": {
+    "runId": "security-20260812-055337",
+    "passed": 4,
+    "failed": 0,
+    "sourceDirectory": "D:\\agent-crosschain-platform-experiment-v2\\experiments\\results\\security\\security-20260812-055337"
+  },
+  "functional": {
+    "suiteId": "functional-20260812-061557",
+    "passed": 21,
+    "failed": 0,
+    "sourceDirectory": "D:\\agent-crosschain-platform-experiment-v2\\experiments\\results\\functional\\functional-20260812-061557"
+  },
+  "realAgents": {
+    "suiteId": "real-agents-20260812-074204",
+    "passed": 3,
+    "failed": 0,
+    "sourceDirectory": "D:\\agent-crosschain-platform-experiment-v2\\experiments\\results\\real-agents\\real-agents-20260812-074204"
+  }
+}

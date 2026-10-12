@@ -1,0 +1,9 @@
+{
+  "runId": "2b83e916-1fcf-4be4-8ada-8885b482889c",
+  "scenarioId": "REAL-F3",
+  "passed": false,
+  "startedAt": "2026-08-11T22:59:08.128162Z",
+  "finishedAt": "2026-08-11T22:59:18.837715Z",
+  "runnerDurationMs": 10709,
+  "error": "RuntimeError: Workflow 09570c6f-abb9-40b0-8df5-1987d1a0b11e did not terminate after 30 coordination steps"
+}
