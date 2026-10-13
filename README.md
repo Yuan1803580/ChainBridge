@@ -3,6 +3,25 @@
 中文日常启动、故障排查和互联网发布说明见
 [`docs/START_AND_INTERNET_DEPLOYMENT_ZH.md`](docs/START_AND_INTERNET_DEPLOYMENT_ZH.md)。
 
+## Repository layout: two experiment branches
+
+This repository preserves **two parallel-evolved implementations**, mirroring the two
+system configurations described in the paper (§A Experiment Setting):
+
+- **Repository root — managed testnet build.** Deployed on an Alibaba Cloud ECS
+  instance in the past, settling Sepolia (11155111) → Arbitrum Sepolia (421614) via Chainlink CCIP.
+  Includes the deployment assets (`infra/`, `docker-compose.*.yml`, `scripts/deploy/`)
+  and external Agent onboarding. See [docs/MANAGED_TESTNET_V4.md](docs/MANAGED_TESTNET_V4.md).
+- **[`ChainBridge_local/`](ChainBridge_local/README.md) — local experiment build.**
+  Four isolated Hardhat chains (31337–31340) with no testnet funds, no hosted model
+  API and no real assets required. All paper experiments were produced here; raw
+  results live in [`ChainBridge_local/experiments/results/`](ChainBridge_local/experiments)
+  with [`summarize_experiments.py`](ChainBridge_local/experiments/summarize_experiments.py).
+
+The two trees forked while bugs were being fixed in parallel during experimentation,
+so neither supersedes the other — **use the root tree for deployment, and
+`ChainBridge_local/` for reproducing the local experiments.**
+
 ## Local V1 Quick Start
 
 The first seven delivery steps are runnable on four independent local chains.
