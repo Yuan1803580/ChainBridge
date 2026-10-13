@@ -3,6 +3,7 @@
 import {
   Activity,
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   CircleDollarSign,
   Clock3,
@@ -25,8 +26,10 @@ import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { BudgetMeter, ProofBoundaryNotice, ResponsibilityBadge, WorkflowMap, WorkflowStatusBadge } from "@/components/platform-ui";
 import { Breadcrumbs } from "@/components/ui";
-import { dynamicApi } from "@/lib/workflow-api";
+import { dynamicApi, normalizeWorkflow } from "@/lib/workflow-api";
 import type { Workflow } from "@/lib/types";
+
+const TERMINAL_STATUSES = new Set(["COMPLETED", "REFUNDED", "FAILED_REFUNDED", "CANCELLED"]);
 
 const attemptTone = {
   OFFERED: "border-blue-200 bg-blue-50 text-blue-700",
@@ -66,6 +69,10 @@ export default function WorkflowDetailPage() {
   const [selectedNodeId, setSelectedNodeId] = useState("");
   const [replayStep, setReplayStep] = useState<number | null>(null);
   const [playing, setPlaying] = useState(false);
+  const [autoCoordinating, setAutoCoordinating] = useState(false);
+  const [stepping, setStepping] = useState(false);
+  const [rawStatus, setRawStatus] = useState("");
+  const [coordinateError, setCoordinateError] = useState("");
   const selectedNode = workflow?.nodes.find((node) => node.id === selectedNodeId) || workflow?.nodes[0];
   const selectedMatchRounds = selectedNode?.matchRounds || [];
   const selectedMatchRound = selectedMatchRounds[selectedMatchRounds.length - 1];
@@ -105,6 +112,50 @@ export default function WorkflowDetailPage() {
     setTab("overview");
   };
 
+  const coordinateNow = async (maxActions: number) => {
+    const result = await dynamicApi.coordinate(params.id, maxActions);
+    setWorkflow(normalizeWorkflow(result.workflow));
+    setCoordinateError("");
+    const status = String(result.workflow?.status || "");
+    setRawStatus(status);
+    return status;
+  };
+
+  const stepOnce = async () => {
+    setStepping(true);
+    try {
+      await coordinateNow(1);
+    } catch (reason) {
+      setCoordinateError(reason instanceof Error ? reason.message : String(reason));
+    } finally {
+      setStepping(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!autoCoordinating) return;
+    let stopped = false;
+    let timer = 0;
+    const tick = async () => {
+      if (stopped) return;
+      try {
+        const status = await coordinateNow(8);
+        if (TERMINAL_STATUSES.has(status)) {
+          setAutoCoordinating(false);
+          return;
+        }
+      } catch (reason) {
+        setCoordinateError(reason instanceof Error ? reason.message : String(reason));
+      }
+      if (!stopped) timer = window.setTimeout(tick, 2500);
+    };
+    void tick();
+    return () => {
+      stopped = true;
+      window.clearTimeout(timer);
+    };
+  }, [autoCoordinating, params.id]);
+
   const totalCredits = useMemo(() => workflow?.ledger
     .filter((entry) => !entry.assetSymbol || entry.assetSymbol === workflow.budget.currency)
     .reduce((sum, entry) => sum + Number(entry.credit), 0) || 0, [workflow]);
@@ -120,11 +171,24 @@ export default function WorkflowDetailPage() {
         <h1 className="page-title mt-2">{workflow.title}</h1>
         <p className="page-subtitle">{workflow.objective}</p>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Link href="/workflows" className="icon-btn" aria-label="返回工作流"><ArrowLeft className="size-4" /></Link>
+        <button className="btn-secondary" onClick={stepOnce} disabled={stepping || autoCoordinating}><ArrowRight className="size-4" />推进一步</button>
+        <button className={autoCoordinating ? "btn-primary" : "btn-secondary"} onClick={() => { setCoordinateError(""); setAutoCoordinating((value) => !value); }}>{autoCoordinating ? <><Pause className="size-4" />停止协调</> : <><Play className="size-4" />自动协调</>}</button>
         <button className="btn-secondary" onClick={replay}><RotateCcw className="size-4" />重放 V1 闭环</button>
       </div>
     </div>
+
+    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border border-line bg-white px-4 py-2.5 text-xs" style={{ borderRadius: 6 }}>
+      <span className="flex items-center gap-2">
+        {autoCoordinating
+          ? <><span className="size-2 animate-pulse rounded-full bg-brand-600" /><b>自动协调已开启</b><span className="text-neutral-500">每 2.5 秒调用一次 coordinate，单次最多推进 8 步，到终态自动停止</span></>
+          : <><span className="size-2 rounded-full bg-neutral-300" /><b>自动协调未开启</b><span className="text-neutral-500">状态机只在被调用 coordinate 时推进，可用“推进一步”手动推进</span></>}
+      </span>
+      {rawStatus && <span className="font-mono text-[10px] text-neutral-500">STATUS · {rawStatus}</span>}
+    </div>
+
+    {coordinateError && <div className="mt-3 border border-red-200 bg-red-50 px-4 py-3 text-xs leading-5 text-red-700">协调调用失败：{coordinateError}{/requester|admin/i.test(coordinateError) ? " —— 当前登录身份既不是该工作流的 requester，也没有 admin 角色。" : ""}</div>}
 
     <ProofBoundaryNotice />
 
@@ -192,6 +256,10 @@ export default function WorkflowDetailPage() {
                 <div className="mt-2 flex flex-wrap items-baseline gap-2"><b className="font-mono text-sm">{attempt.settlementAsset} → {attempt.payoutAsset}</b><span className="font-mono text-[10px] text-neutral-500">1 {attempt.settlementAsset} = {attempt.payoutRate} {attempt.payoutAsset}</span></div>
                 <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-2 text-[10px]"><span className="text-neutral-500">报价到账</span><b className="text-right font-mono">{attempt.payoutQuoteAmount ? `${attempt.payoutQuoteAmount} ${attempt.payoutAsset}` : "PENDING"}</b><span className="text-neutral-500">最低到账</span><b className="text-right font-mono">{attempt.payoutMinAmount ? `${attempt.payoutMinAmount} ${attempt.payoutAsset}` : "-"}</b><span className="text-neutral-500">Token / 精度</span><b className="break-all text-right font-mono">{attempt.payoutTokenAddress ? `${attempt.payoutTokenAddress.slice(0, 8)}...${attempt.payoutTokenAddress.slice(-6)}` : "DIRECT"} / {attempt.payoutDecimals}</b><span className="text-neutral-500">Payout tx</span><b className="break-all text-right font-mono">{attempt.payoutTxHash ? `${attempt.payoutTxHash.slice(0, 10)}...${attempt.payoutTxHash.slice(-8)}` : "-"}</b></div>
               </div>}
+            {attempt.resultPayload && <div className="mt-3 border-t border-line pt-3">
+              <div className="flex items-center justify-between gap-2"><span className="text-[11px] font-semibold text-neutral-600">Agent 明文输出</span><span className="font-mono text-[10px] text-neutral-500">resultPayload</span></div>
+              <pre className="mt-2 max-h-64 overflow-auto whitespace-pre-wrap break-all border border-line bg-neutral-50 p-3 font-mono text-[11px] leading-5 text-neutral-700 scrollbar-thin" style={{ borderRadius: 6 }}>{JSON.stringify(attempt.resultPayload, null, 2)}</pre>
+            </div>}
             {attempt.review && <div className={`mt-3 flex items-start gap-2 border px-3 py-2.5 text-[11px] leading-4 ${attempt.review.decision === "PASS" ? "border-emerald-200 bg-emerald-50 text-emerald-800" : "border-red-200 bg-red-50 text-red-800"}`} style={{ borderRadius: 6 }}>{attempt.review.decision === "PASS" ? <CheckCircle2 className="mt-0.5 size-3.5 shrink-0" /> : <XCircle className="mt-0.5 size-3.5 shrink-0" />}<span><b className="font-mono">{attempt.review.reasonCode}</b><br />{attempt.review.summary}</span></div>}
           </div>)}
           {!selectedNode.attempts.length && <div className="p-5 text-center text-xs text-neutral-500"><Clock3 className="mx-auto mb-2 size-5" />等待前置节点 SETTLED</div>}

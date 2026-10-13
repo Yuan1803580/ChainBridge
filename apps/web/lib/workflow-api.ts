@@ -33,6 +33,7 @@ export type RawAttempt = {
   routeVersion: number;
   matchCandidateId?: string;
   resultHash?: string;
+  resultPayload?: Record<string, unknown> | null;
   proofHash?: string;
   reviewReason?: string;
   failureReasonCode?: string;
@@ -691,6 +692,7 @@ export function normalizeWorkflow(raw: RawWorkflow): Workflow {
         startedAt: attempt.createdAt,
         finishedAt: attempt.settledAt || attempt.reviewedAt || attempt.submittedAt,
         resultHash: attempt.resultHash,
+        resultPayload: attempt.resultPayload ?? null,
         resultProofStatus: attempt.resultProofStatus,
         resultProofTxHash: attempt.resultProofTxHash,
         coordinatorReviewHash: attempt.coordinatorReviewHash,

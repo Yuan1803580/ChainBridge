@@ -17,7 +17,7 @@ import {
   WalletCards,
 } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { ProofBoundaryNotice } from "@/components/platform-ui";
 import { Breadcrumbs } from "@/components/ui";
 import {
@@ -49,6 +49,11 @@ const LOGIN_HINT = "请先在页面右上角点击『控制台登录』，使用
 
 export default function NewWorkflowPage() {
   const [objective, setObjective] = useState("汇总四份跨链协议材料，比较消息验证、代币转移与失败补偿机制，并审查 Escrow 状态机风险。");
+  const [materials, setMaterials] = useState("");
+  const inputPayload = useMemo(
+    () => ({ source: "visual-console", ...(materials.trim() ? { materials: materials.trim() } : {}) }),
+    [materials],
+  );
   const [budget, setBudget] = useState("20.00");
   const [fundingMode, setFundingMode] = useState<FundingMode>("RESERVED");
   const [sourceGasAmount, setSourceGasAmount] = useState("0.01");
@@ -153,7 +158,7 @@ export default function NewWorkflowPage() {
         objective,
         budget: Number(budget).toFixed(2),
         platformFee: "1.10",
-        inputPayload: { source: "visual-console" },
+        inputPayload,
       });
       setPlan(value);
       setStage("plan");
@@ -198,7 +203,7 @@ export default function NewWorkflowPage() {
         objective,
         budget: Number(budget).toFixed(2),
         platformFee: "1.10",
-        inputPayload: { source: "visual-console" },
+        inputPayload,
         fundingMode: "ONCHAIN",
         payerAddress: account,
       });
@@ -284,6 +289,11 @@ export default function NewWorkflowPage() {
               <span className="label">任务内容</span>
               <textarea className="textarea min-h-40" value={objective} onChange={(event) => setObjective(event.target.value)} placeholder="描述需要完成的最终目标、输入材料和期望结果" required />
               <span className="mt-1.5 block text-[11px] text-neutral-500">协调 Agent 将固化 criteriaHash，创建后不能自行修改验收条件。</span>
+            </label>
+            <label>
+              <span className="label">输入材料<span className="ml-1 font-normal text-neutral-400">可选</span></span>
+              <textarea className="textarea min-h-32" value={materials} onChange={(event) => setMaterials(event.target.value)} placeholder="粘贴需要 Agent 分析的原文材料。留空则 Agent 只能读到上面的任务描述，真实大模型会因缺少证据给出低分甚至 0 分。" />
+              <span className="mt-1.5 block text-[11px] text-neutral-500">写入 workflow.inputPayload，随派单一并发给 Agent，是 Agent 唯一能拿到的实质输入。</span>
             </label>
             <label>
               <span className="label">最高预算</span>

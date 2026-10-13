@@ -324,6 +324,7 @@ export interface WorkflowAttempt {
   finishedAt?: string;
   resultHash?: string;
   resultUri?: string;
+  resultPayload?: Record<string, unknown> | null;
   resultProofStatus?: string;
   resultProofTxHash?: string;
   coordinatorReviewHash?: string;
