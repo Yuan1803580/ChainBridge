@@ -1,4 +1,4 @@
-# Agent ChainBridge
+# ChainBridge
 
 中文日常启动、故障排查和互联网发布说明见
 [`docs/START_AND_INTERNET_DEPLOYMENT_ZH.md`](docs/START_AND_INTERNET_DEPLOYMENT_ZH.md)。
