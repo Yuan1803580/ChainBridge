@@ -14,7 +14,7 @@ system configurations described in the paper (§A Experiment Setting):
   and external Agent onboarding. See [docs/MANAGED_TESTNET_V4.md](docs/MANAGED_TESTNET_V4.md).
 - **[`ChainBridge_local/`](ChainBridge_local/README.md) — local experiment build.**
   Four isolated Hardhat chains (31337–31340) with no testnet funds, no hosted model
-  API and no real assets required. All paper experiments were produced here; raw
+  API and no real assets required. All paper local experiments were produced here; raw
   results live in [`ChainBridge_local/experiments/results/`](ChainBridge_local/experiments)
   with [`summarize_experiments.py`](ChainBridge_local/experiments/summarize_experiments.py).
 
